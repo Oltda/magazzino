@@ -1,0 +1,17 @@
+#stock-table, #warehouse-table{
+    border: 1px solid black;
+}
+
+
+#stock-table, #warehouse-table{
+     margin: auto;
+
+
+}
+
+#stock-table, #warehouse-table td, th{
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+
+}

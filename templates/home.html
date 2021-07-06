@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <title>Warehouse Manager</title>
+</head>
+<body>
+
+
+
+<script>
+
+var stock_array = {{stock_array | tojson}};
+var warehouse_list = {{warehouse_list | tojson}};
+
+
+
+console.log(stock_array)
+console.log(warehouse_list)
+
+
+
+</script>
+
+
+    <table id="stock-table">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Warehouse ID</th>
+            <th>Product Code</th>
+
+        </tr>
+
+
+     {% for item in stock_array %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.unit}}</td>
+            <td>{{item.expiration_date}}</td>
+            <td>{{item.product_code}}</td>
+            <td>{{item.warehouse_id}}</td>
+
+
+        </tr>
+        {% endfor %}
+    </table>
+
+<br>
+
+    <table id="warehouse-table">
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+        </tr>
+
+
+     {% for item in warehouse_list %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.address}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+<br>
+
+        <h2>Warehouse</h2>
+
+        <form action="/warehouse" method="post">
+          <label for="warehouse-name">Warehouse name:</label><br>
+          <input type="text" id="warehouse-name" name="warehouse-name"><br>
+          <label for="address">Address:</label><br>
+          <input type="text" id="address" name="address"><br><br>
+          <input id="submitBtn" type="submit" value="Submit">
+        </form>
+
+
+<br>
+
+
+
+
+        <script>
+
+            seznam = []
+
+            $("#submitBtn").click(function (e) {
+
+
+
+                var warhName = $("#warehouse-name").val();
+                var address = $("#address").val();
+                $.ajax({
+                    url:'/warehouse',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                    'name':warhName,
+                     'address':address
+                    }),
+
+                    success: function (response) {
+                        seznam = response['warehouse_list']
+                        console.log(seznam);
+
+                        new_wareh = seznam[seznam.length -1]
+
+                        var row = document.createElement("TR");
+                        var tabulka = document.getElementById("warehouse-table")
+                        tabulka.appendChild(row);
+                        var td = document.createElement('td');
+                        td.innerHTML = new_wareh['name']
+                        var td2 = document.createElement('td');
+                        td2.innerHTML = new_wareh['address']
+                        row.appendChild(td);
+                        row.appendChild(td2);
+
+
+                        document.getElementById("warehouse-name").value = ""
+                        document.getElementById("address").value = ""
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+
+                });
+
+
+                e.preventDefault();
+
+
+
+
+            })
+
+
+
+
+        </script>
+
+
+
+
+</body>
+</html>

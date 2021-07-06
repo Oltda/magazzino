@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+
+
+
+<h1>Sign Up</h1>
+
+
+<div>
+
+
+<form action="" method="post">
+
+      <div>
+
+              {{ form.hidden_tag() }}
+
+              <p>
+              {{ form.username.label }}<br>
+              {{ form.username(size=32)}}<br>
+              </p>
+
+              <p>
+                {{ form.email.label }}
+                {{ form.email(size=20) }}
+              </p>
+
+              <p>
+                {{ form.password.label }}<br>
+                {{ form.password(size=12) }}<br>
+              </p>
+
+              <p>
+                {{ form.password2.label }}<br>
+                {{ form.password2(size=12) }}<br>
+              </p>
+
+              <p> {{ form.submit(class_='submitLogin') }} </p>
+
+      </div>
+
+</form>
+
+</div>
+
+
+</body>
+
+</html>
