@@ -316,17 +316,16 @@ def create_app(test_config=None):
 
 
         product_codes_collection = ProductCodes.query.all()
+
+
         product_code_list = []
 
         for i in product_codes_collection:
-            product_code_list.append(i.product_code)
+            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
 
-        return jsonify({
-            'success': True,
-            'items_list': items_list,
-            'codes': product_code_list
-        })
+        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list)
+
 
 
     @app.route('/stock-items/<int:warehouse_id>', methods=['GET'])
@@ -343,7 +342,7 @@ def create_app(test_config=None):
             code = ProductCodes.query.filter_by(product_code=i.product_code).first()
             stock_item = {
                           'id': i.id,
-                          'name': i.product_name,
+                          'product_name': i.product_name,
                           'quantity': i.quantity,
                           'expiration_date': i.expiration_date.strftime('%d-%b-%Y'),
                           'warehouse_id': i.warehouse_id,
@@ -351,6 +350,13 @@ def create_app(test_config=None):
                           'unit': code.unit
                           }
             stock_array.append(stock_item)
+
+
+        product_codes_collection = ProductCodes.query.all()
+        product_code_list = []
+
+        for i in product_codes_collection:
+            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
         warehouse_collection = Warehouse.query.all()
         warehouse_list = []
@@ -361,12 +367,12 @@ def create_app(test_config=None):
                 "name": i.name,
                 "address": i.address})
 
-        return jsonify({
-            'success': True,
-            'stock_array': stock_array,
-            'warehouse_list': warehouse_list,
-        })
-
+        # return jsonify({
+        #     'success': True,
+        #     'stock_array': stock_array,
+        #     'warehouse_list': warehouse_list,
+        # })
+        return render_template('stock.html', stock_array=stock_array, product_code_list=product_code_list)
 
     @app.route('/stock-items', methods=['POST'])
     @login_required
@@ -380,9 +386,11 @@ def create_app(test_config=None):
             warehouse_id = int(body.get('warehouse_id', None))
             product_code = body.get('product_code', None)
 
+            user_id = current_user.id
+
             item = StockItems(product_name=new_product_name, quantity=new_quantity,
                               expiration_date=new_expiration_date, warehouse_id=warehouse_id,
-                              product_code=product_code)
+                              product_code=product_code, user_id=user_id)
 
             item.insert()
 
@@ -395,7 +403,8 @@ def create_app(test_config=None):
                             "quantity": i.quantity,
                             "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
                             "warehouse_id": i.warehouse_id,
-                            "product_code": i.product_code
+                            "product_code": i.product_code,
+                            "user_id": i.user_id
                             })
 
             product_codes_collection = ProductCodes.query.all()
@@ -403,12 +412,16 @@ def create_app(test_config=None):
             for i in product_codes_collection:
                 product_code_list.append(i.product_code)
 
-            return jsonify({
-                'success': True,
-                'items_list': items_list,
-                'codes': product_code_list,
-                'new_stock_id': item.id
-            })
+            Message = {"items_list": items_list}
+
+            return Message
+
+            # return jsonify({
+            #     'success': True,
+            #     'items_list': items_list,
+            #     'codes': product_code_list,
+            #     'new_stock_id': item.id
+            # })
         except:
             abort(422)
 

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script>
+
+var stock_array = {{stock_array | tojson}};
+var product_code_list = {{product_code_list | tojson}}
+
+
+
+
+
+
+
+</script>
+
+
+    <table id="stock-table">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Expiration date</th>
+            <th>Product Code</th>
+            <th>Warehouse ID</th>
+        </tr>
+
+
+     {% for item in stock_array %}
+        <tr>
+            <td>{{item.product_name}}</td>
+            <td>{{item.quantity}}</td>
+
+            {% for code in product_code_list %}
+
+            {% if code['code'] == item.product_code %}
+            <td>{{code.unit}}</td>
+            {% endif %}
+            {% endfor %}
+
+            <td>{{item.expiration_date}}</td>
+            <td>{{item.product_code}}</td>
+            <td>{{item.warehouse_id}}</td>
+            <td onclick="deleteStock(this)" data-id="{{item.id}}">Delete</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+<br>
+        <h2>Stock Items</h2>
+
+        <form action="/stock-items" method="post">
+          <label for="item-name">Product name:</label><br>
+          <input type="text" id="item-name" name="item-name"><br>
+
+          <label for="quantity">Quantity:</label><br>
+          <input type="text" id="quantity" name="quantity"><br>
+
+
+            <label for="expiration_date">Expiration date:</label><br>
+          <input type="date" id="expiration_date" name="expiration_date"><br>
+
+          <label for="product_code">Product Code:</label><br>
+          <input type="text" id="product_code" name="product_code"><br>
+
+          <label for="warehouse_id">Warehouse ID:</label><br>
+          <input type="text" id="warehouse_id" name="warehouse_id"><br><br>
+
+          <input id="submitBtn" type="submit" value="Submit">
+        </form>
+
+
+
+
+
+
+        <script>
+
+
+
+            function deleteStock(element) {
+
+            stockID = element.getAttribute('data-id')
+            element.parentElement.style.display = "None";
+
+                $.ajax({
+                 url: '/stock-items/' + stockID,
+                 type: "DELETE"
+                 });
+            }
+
+
+
+            seznam = []
+
+            $("#submitBtn").click(function (e) {
+
+
+
+                var itemName = $("#item-name").val();
+                var quantity = $("#quantity").val();
+                var expDate = $("#expiration_date").val();
+                var prodCode = $("#product_code").val();
+                var warhID = $("#warehouse_id").val();
+
+
+
+                $.ajax({
+                    url:'/stock-items',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                     'product_name':itemName,
+                     'quantity':quantity,
+                     'expiration_date':expDate,
+                     'warehouse_id':warhID,
+                     'product_code':prodCode
+
+                    }),
+
+                    success: function (response) {
+                        seznam = response['items_list']
+
+
+                        new_item = seznam[seznam.length -1]
+
+                        var row = document.createElement("TR");
+                        var tabulka = document.getElementById("stock-table")
+                        tabulka.appendChild(row);
+
+                        var td1 = document.createElement('td');
+                        td1.innerHTML = new_item['product_name']
+
+                        var td2 = document.createElement('td');
+                        td2.innerHTML = new_item['quantity']
+
+                        var td3 = document.createElement('td');
+
+
+                        let unit = "";
+
+                                for (let i = 0; i < product_code_list.length; i++) {
+
+                                    if(product_code_list[i]['code'] === new_item['product_code']){
+                                    unit = product_code_list[i]['unit']
+
+
+                                    }
+                                }
+                        td3.innerHTML = unit
+
+
+                        var td4 = document.createElement('td');
+                        td4.innerHTML = new_item['expiration_date']
+
+
+
+                        var td5 = document.createElement('td');
+                        td5.innerHTML = new_item['product_code']
+
+                        var td6 = document.createElement('td');
+                        td6.innerHTML = new_item['warehouse_id']
+
+
+
+
+                        row.appendChild(td1);
+                        row.appendChild(td2);
+                        row.appendChild(td3);
+                        row.appendChild(td4);
+                        row.appendChild(td5);
+                        row.appendChild(td6);
+
+
+
+
+                        document.getElementById("item-name").value = ""
+                        document.getElementById("quantity").value = ""
+
+                        document.getElementById("expiration_date").value = ""
+                        document.getElementById("product_code").value = ""
+
+                        document.getElementById("warehouse_id").value = ""
+
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                e.preventDefault();
+            })
+
+
+
+
+        </script>
+
+
+
+
+
+</body>
+</html>

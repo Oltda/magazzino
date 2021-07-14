@@ -64,6 +64,7 @@ console.log(warehouse_list)
         <tr>
             <td>{{item.name}}</td>
             <td>{{item.address}}</td>
+            <td onclick="deleteWarehouse(this)" data-id="{{item.id}}">Delete</td>
         </tr>
         {% endfor %}
     </table>
@@ -89,11 +90,22 @@ console.log(warehouse_list)
 
         <script>
 
+            function deleteWarehouse(element) {
+
+            warehouseID = element.getAttribute('data-id')
+            element.parentElement.style.display = "None";
+
+                $.ajax({
+                 url: '/warehouse/' + warehouseID,
+                 type: "DELETE"
+                    });
+
+            }
+
+
+
             seznam = []
-
             $("#submitBtn").click(function (e) {
-
-
 
                 var warhName = $("#warehouse-name").val();
                 var address = $("#address").val();
@@ -131,15 +143,8 @@ console.log(warehouse_list)
                     error: function (error) {
                         console.log(error);
                     }
-
                 });
-
-
                 e.preventDefault();
-
-
-
-
             })
 
 
