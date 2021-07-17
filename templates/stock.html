@@ -49,7 +49,7 @@ var product_code_list = {{product_code_list | tojson}}
             <td>{{item.expiration_date}}</td>
             <td>{{item.product_code}}</td>
             <td>{{item.warehouse_id}}</td>
-            <td onclick="deleteStock(this)" data-id="{{item.id}}">Delete</td>
+            <td class="deleteBtn"  data-id="{{item.id}}">Delete</td>
 
         </tr>
         {% endfor %}
@@ -84,19 +84,21 @@ var product_code_list = {{product_code_list | tojson}}
 
 
         <script>
+            function deleteStock(){
+             var stockID = $(this).attr("data-id")
 
+            console.log(stockID)
+            $(this).parent().hide()
 
-
-            function deleteStock(element) {
-
-            stockID = element.getAttribute('data-id')
-            element.parentElement.style.display = "None";
-
-                $.ajax({
-                 url: '/stock-items/' + stockID,
-                 type: "DELETE"
+                 $.ajax({
+                     url: '/stock-items/' + stockID,
+                     type: "DELETE"
                  });
             }
+
+
+            $(".deleteBtn").click(deleteStock)
+
 
 
 
@@ -171,6 +173,8 @@ var product_code_list = {{product_code_list | tojson}}
                         var td6 = document.createElement('td');
                         td6.innerHTML = new_item['warehouse_id']
 
+                        var td6 = document.createElement('td');
+                        td6.innerHTML = new_item['warehouse_id']
 
 
 

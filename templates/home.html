@@ -62,9 +62,35 @@ console.log(warehouse_list)
 
      {% for item in warehouse_list %}
         <tr>
-            <td>{{item.name}}</td>
-            <td>{{item.address}}</td>
+            <td id="warh{{item.id}}">{{item.name}}</td>
+            <td id="addr{{item.id}}">{{item.address}}</td>
             <td onclick="deleteWarehouse(this)" data-id="{{item.id}}">Delete</td>
+        </tr>
+        <tr>
+
+        <form>
+            <td>
+            <input placeholder="warehouse name" id="warehouse{{item.id}}" type="text" name="edit-name">
+            </td>
+            <br>
+            <td>
+            <input placeholder="address" id="address{{item.id}}" type="text" name="edit-address"><br><br>
+            </td>
+            <td>
+            <input value="{{item.id}}" id="warehouseID{{item.id}}"  type="text" name="id-warehouse"><br><br>
+            </td>
+            <td>
+                <input type="submit" class="editButton"  data-id="{{item.id}}">
+            </td>
+
+        </form>
+
+
+
+
+
+
+
         </tr>
         {% endfor %}
     </table>
@@ -88,72 +114,9 @@ console.log(warehouse_list)
 
 
 
-        <script>
-
-            function deleteWarehouse(element) {
-
-            warehouseID = element.getAttribute('data-id')
-            element.parentElement.style.display = "None";
-
-                $.ajax({
-                 url: '/warehouse/' + warehouseID,
-                 type: "DELETE"
-                    });
-
-            }
 
 
-
-            seznam = []
-            $("#submitBtn").click(function (e) {
-
-                var warhName = $("#warehouse-name").val();
-                var address = $("#address").val();
-                $.ajax({
-                    url:'/warehouse',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                    'name':warhName,
-                     'address':address
-                    }),
-
-                    success: function (response) {
-                        seznam = response['warehouse_list']
-                        console.log(seznam);
-
-                        new_wareh = seznam[seznam.length -1]
-
-                        var row = document.createElement("TR");
-                        var tabulka = document.getElementById("warehouse-table")
-                        tabulka.appendChild(row);
-                        var td = document.createElement('td');
-                        td.innerHTML = new_wareh['name']
-                        var td2 = document.createElement('td');
-                        td2.innerHTML = new_wareh['address']
-                        row.appendChild(td);
-                        row.appendChild(td2);
-
-
-                        document.getElementById("warehouse-name").value = ""
-                        document.getElementById("address").value = ""
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-                e.preventDefault();
-            })
-
-
-
-
-        </script>
-
-
-
+<script src="static/js/home.js"></script>
 
 </body>
 </html>

@@ -175,8 +175,9 @@ def create_app(test_config=None):
         body = request.get_json()
 
         try:
-            edited_name = body.get('name')
-            edited_address = body.get('address')
+            edited_name = body.get('edit-name')
+            edited_address = body.get('edit-address')
+            user_id = current_user.id
 
             warehouse_patch = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
 
@@ -195,11 +196,15 @@ def create_app(test_config=None):
                     "address": i.address
                 })
 
-            return jsonify({
-                'success': True,
-                'warehouse_list': warehouse_list,
-                'edited_warehouse_id': warehouse_patch.id
-            })
+            # return jsonify({
+            #     'success': True,
+            #     'warehouse_list': warehouse_list,
+            #     'edited_warehouse_id': warehouse_patch.id
+            # })
+
+            Message = {"warehouse_list": warehouse_list}
+
+            return Message
 
         except:
             abort(422)
