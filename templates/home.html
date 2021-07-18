@@ -31,9 +31,9 @@ console.log(warehouse_list)
             <th>Product</th>
             <th>Quantity</th>
             <th>Unit</th>
-            <th>Warehouse ID</th>
+            <th>Expiration Date</th>
             <th>Product Code</th>
-
+            <th>Warehouse ID</th>
         </tr>
 
 
@@ -61,25 +61,26 @@ console.log(warehouse_list)
 
 
      {% for item in warehouse_list %}
-        <tr class="he">
+        <tr>
             <form class="edit-frm">
-                <td class="prev"><p class="original-entry" id="warh{{item.id}}">{{item.name}}</p>
-                <input class="new-entry" placeholder="warehouse name" id="warehouse{{item.id}}" type="text" name="edit-name">
+                <td><p class="original-entry" id="warh{{item.id}}">{{item.name}}</p>
+                    <input class="new-entry" placeholder="warehouse name" id="warehouse{{item.id}}" type="text" name="edit-name">
                 </td>
 
 
 
-                <td class="prev"><p class="original-entry" id="addr{{item.id}}">{{item.address}}</p>
-                <input class="new-entry" placeholder="address" id="address{{item.id}}" type="text" name="edit-address">
+                <td><p class="original-entry" id="addr{{item.id}}">{{item.address}}</p>
+                    <input class="new-entry" placeholder="address" id="address{{item.id}}" type="text" name="edit-address">
                 </td>
 
 
-                <td class="prev" ><button class="original-entry" onclick="deleteWarehouse(this)" data-id="{{item.id}}">Delete</button>
-                <input type="submit" class="editButton"  data-id="{{item.id}}">
+                <td class="btnContainer" >
+                    <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
+                    <input type="submit" class="editButton"  data-id="{{item.id}}">
                 </td>
 
 
-                <td onclick="showEdit(this)">Edit</td>
+                <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
             </form>
 
 

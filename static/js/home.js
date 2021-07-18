@@ -73,19 +73,34 @@
 
 
 
+            $(".deleteBtn").click(function (e) {
+                warehouseID = $(this).attr("data-id")
 
+                $(this).parent().parent().hide()
 
-            function deleteWarehouse(element) {
-
-            warehouseID = element.getAttribute('data-id')
-            element.parentElement.style.display = "None";
-
-                $.ajax({
+                 $.ajax({
                  url: '/warehouse/' + warehouseID,
                  type: "DELETE"
                     });
+                e.preventDefault();
+            });
 
-            }
+
+
+
+
+
+//            function deleteWarehouse(element) {
+//
+//            warehouseID = element.getAttribute('data-id')
+//            element.parentElement.parentElement.style.display = "None";
+//
+//                $.ajax({
+//                 url: '/warehouse/' + warehouseID,
+//                 type: "DELETE"
+//                    });
+//
+//            }
 
 
 
