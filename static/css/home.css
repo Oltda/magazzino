@@ -15,3 +15,48 @@
       padding: 8px;
 
 }
+
+
+
+
+.original-entry{
+display: block;
+}
+
+.editButton{
+display: none;
+}
+
+.original-entry.editing{
+display: none;
+}
+
+.editButton.editing{
+display: block;
+}
+
+
+.new-entry{
+display: none;
+}
+
+.new-entry.editing{
+display: block;
+}
+
+
+.edit-cont{
+
+}
+
+
+.hide{
+
+}
+
+
+
+
+.show{
+
+}

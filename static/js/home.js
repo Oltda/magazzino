@@ -1,25 +1,26 @@
-/*
-    function editWarehouse(element){
-        var editWarehouseID = element.getAttribute('data-id')
-        var addressInputId = "address" +  editWarehouseID
-        var warehouseInputId = "warehouse" +  editWarehouseID
-
-        var warehouseVal = document.getElementById(warehouseInputId).value
-        var addressVal = document.getElementById(addressInputId).value
-
-        element.preventDefault()
-
-        console.log(warehouseVal)
-    }
-
-*/
 
 
 
 
+            function showEdit(element){
+            var formChildren =  element.parentNode.children
+
+            for(let i = 0; i < formChildren.length; i++){
+
+                if(formChildren[i].hasChildNodes() == true){
+
+                    for(let y = 0; y < formChildren[i].children.length; y++){
+                    formChildren[i].children[y].classList.toggle("editing")
+                    }
+
+                }
+
+            }
 
 
 
+
+            }
 
 
             seznam = []
