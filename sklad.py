@@ -437,11 +437,11 @@ def create_app(test_config=None):
         body = request.get_json()
 
         try:
-            edit_product_name = body.get('product_name')
-            edit_quantity = int(body.get('quantity'))
-            edit_expiration_date = body.get('expiration_date')
-            edit_warehouse_id = int(body.get('warehouse_id'))
-            edit_product_code = body.get('product_code')
+            edit_product_name = body.get('edit-product_name')
+            edit_quantity = int(body.get('edit-quantity'))
+            edit_expiration_date = body.get('edit-expiration_date')
+            edit_warehouse_id = int(body.get('edit-warehouse_id'))
+            edit_product_code = body.get('edit-product_code')
 
             stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
 
@@ -480,12 +480,17 @@ def create_app(test_config=None):
             for i in product_codes_collection:
                 product_code_list.append(i.product_code)
 
-            return jsonify({
-                'success': True,
-                'warehouse_list': warehouse_list,
-                'items_list': items_list,
-                'codes': product_code_list
-            })
+            # return jsonify({
+            #     'success': True,
+            #     'warehouse_list': warehouse_list,
+            #     'items_list': items_list,
+            #     'codes': product_code_list
+            # })
+
+            # dodelat warehouselist a product code list
+            Message = {"items_list": items_list}
+
+            return Message
 
         except:
             abort(422)

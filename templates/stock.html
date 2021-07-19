@@ -36,24 +36,63 @@ var product_code_list = {{product_code_list | tojson}}
 
      {% for item in stock_array %}
         <tr>
-            <td>{{item.product_name}}</td>
-            <td>{{item.quantity}}</td>
+            <form>
+                <td>
+                    <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
+                    <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
+                </td>
 
-            {% for code in product_code_list %}
+                <td>
+                    <p class="original-entry" id="quantity{{item.id}}">{{item.quantity}}</p>
+                    <input class="new-entry" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
+                </td>
 
-            {% if code['code'] == item.product_code %}
-            <td>{{code.unit}}</td>
-            {% endif %}
-            {% endfor %}
+                {% for code in product_code_list %}
 
-            <td>{{item.expiration_date}}</td>
-            <td>{{item.product_code}}</td>
-            <td>{{item.warehouse_id}}</td>
-            <td class="deleteBtn"  data-id="{{item.id}}">Delete</td>
+                {% if code['code'] == item.product_code %}
 
+                <td>
+                    <p class="original-entry" id="unit{{item.id}}">{{code.unit}}</p>
+
+                </td>
+
+
+                {% endif %}
+                {% endfor %}
+
+                <td>
+                    <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
+                    <input class="new-entry" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
+                </td>
+
+                <td>
+                    <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
+                    <input class="new-entry" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
+                </td>
+
+                <td>
+                    <p class="original-entry" id="warehouse{{item.id}}">{{item.warehouse_id}}</p>
+                    <input class="new-entry" placeholder="product code" id="warehouseID{{item.id}}" type="text" name="edit-warehouse_id">
+                </td>
+
+                <td class="btnContainer">
+                    <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
+                    <input type="submit" class="editButton"  data-id="{{item.id}}">
+                </td>
+
+                <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
+        </form>
         </tr>
         {% endfor %}
     </table>
+
+
+
+
+
+
+
+
 
 <br>
         <h2>Stock Items</h2>
@@ -80,138 +119,7 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
-
-
-
-        <script>
-            function deleteStock(){
-             var stockID = $(this).attr("data-id")
-
-            console.log(stockID)
-            $(this).parent().hide()
-
-                 $.ajax({
-                     url: '/stock-items/' + stockID,
-                     type: "DELETE"
-                 });
-            }
-
-
-            $(".deleteBtn").click(deleteStock)
-
-
-
-
-            seznam = []
-
-            $("#submitBtn").click(function (e) {
-
-
-
-                var itemName = $("#item-name").val();
-                var quantity = $("#quantity").val();
-                var expDate = $("#expiration_date").val();
-                var prodCode = $("#product_code").val();
-                var warhID = $("#warehouse_id").val();
-
-
-
-                $.ajax({
-                    url:'/stock-items',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                     'product_name':itemName,
-                     'quantity':quantity,
-                     'expiration_date':expDate,
-                     'warehouse_id':warhID,
-                     'product_code':prodCode
-
-                    }),
-
-                    success: function (response) {
-                        seznam = response['items_list']
-
-
-                        new_item = seznam[seznam.length -1]
-
-                        var row = document.createElement("TR");
-                        var tabulka = document.getElementById("stock-table")
-                        tabulka.appendChild(row);
-
-                        var td1 = document.createElement('td');
-                        td1.innerHTML = new_item['product_name']
-
-                        var td2 = document.createElement('td');
-                        td2.innerHTML = new_item['quantity']
-
-                        var td3 = document.createElement('td');
-
-
-                        let unit = "";
-
-                                for (let i = 0; i < product_code_list.length; i++) {
-
-                                    if(product_code_list[i]['code'] === new_item['product_code']){
-                                    unit = product_code_list[i]['unit']
-
-
-                                    }
-                                }
-                        td3.innerHTML = unit
-
-
-                        var td4 = document.createElement('td');
-                        td4.innerHTML = new_item['expiration_date']
-
-
-
-                        var td5 = document.createElement('td');
-                        td5.innerHTML = new_item['product_code']
-
-                        var td6 = document.createElement('td');
-                        td6.innerHTML = new_item['warehouse_id']
-
-                        var td6 = document.createElement('td');
-                        td6.innerHTML = new_item['warehouse_id']
-
-
-
-                        row.appendChild(td1);
-                        row.appendChild(td2);
-                        row.appendChild(td3);
-                        row.appendChild(td4);
-                        row.appendChild(td5);
-                        row.appendChild(td6);
-
-
-
-
-                        document.getElementById("item-name").value = ""
-                        document.getElementById("quantity").value = ""
-
-                        document.getElementById("expiration_date").value = ""
-                        document.getElementById("product_code").value = ""
-
-                        document.getElementById("warehouse_id").value = ""
-
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-                e.preventDefault();
-            })
-
-
-
-
-        </script>
-
-
-
+<script src="static/js/stock.js"></script>
 
 
 </body>
