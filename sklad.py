@@ -237,17 +237,19 @@ def create_app(test_config=None):
     @login_required
     def show_product_codes():
 
-        codes_collection = ProductCodes.query.all()
-        codes_list = []
 
-        for i in codes_collection:
-            codes_list.append(i.product_code)
+        product_codes_collection = ProductCodes.query.all()
+        product_code_list = []
 
+        for i in product_codes_collection:
+            product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
 
-        return jsonify({
-            'success': True,
-            'codes_list': codes_list
-        })
+        # return jsonify({
+        #     'success': True,
+        #     'codes_list': product_code_list
+        # })
+
+        return render_template('product-code.html', product_code_list=product_code_list)
 
     @app.route('/product-code', methods=['POST'])
     @login_required
@@ -258,26 +260,32 @@ def create_app(test_config=None):
             new_code = body.get('product_code', None)
             new_description = body.get('description', None)
             new_unit = body.get('unit', None)
+            user_id = current_user.id
 
             code = ProductCodes(
                 product_code=new_code,
                 description=new_description,
-                unit=new_unit
+                unit=new_unit,
+                user_id=user_id
             )
 
             code.insert()
 
-            codes_collection = ProductCodes.query.all()
-            codes_list = []
+            product_codes_collection = ProductCodes.query.all()
+            product_code_list = []
 
-            for i in codes_collection:
-                codes_list.append(i.product_code)
+            for i in product_codes_collection:
+                product_code_list.append({"product_code": i.product_code, "unit": i.unit, "description": i.description})
 
-            return jsonify({
-                'success': True,
-                'codes_list': codes_list,
-                'new_code_id': code.id
-            })
+            # return jsonify({
+            #     'success': True,
+            #     'codes_list': codes_list,
+            #     'new_code_id': code.id
+            # })
+
+            Message = {"product_code_list": product_code_list}
+
+            return Message
 
         except:
             abort(422)
@@ -372,11 +380,6 @@ def create_app(test_config=None):
                 "name": i.name,
                 "address": i.address})
 
-        # return jsonify({
-        #     'success': True,
-        #     'stock_array': stock_array,
-        #     'warehouse_list': warehouse_list,
-        # })
         return render_template('stock.html', stock_array=stock_array, product_code_list=product_code_list)
 
     @app.route('/stock-items', methods=['POST'])
@@ -421,12 +424,6 @@ def create_app(test_config=None):
 
             return Message
 
-            # return jsonify({
-            #     'success': True,
-            #     'items_list': items_list,
-            #     'codes': product_code_list,
-            #     'new_stock_id': item.id
-            # })
         except:
             abort(422)
 
@@ -463,31 +460,33 @@ def create_app(test_config=None):
                     "address": i.address
                 })
 
+
+            product_codes_collection = ProductCodes.query.all()
+            product_code_list = []
+
+            for i in product_codes_collection:
+                product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
+
+
+
             stock_items_collection = StockItems.query.all()
             items_list = []
             for i in stock_items_collection:
+                for x in product_code_list:
+                    if x['code'] == i.product_code:
+                        unit = x['unit']
+
                 items_list.append({
                     "id": i.id,
                     "product_name": i.product_name,
                     "quantity": i.quantity,
                     "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
                     "warehouse_id": i.warehouse_id,
-                    "product_code": i.product_code
+                    "product_code": i.product_code,
+                    "unit": unit
                 })
 
-            product_codes_collection = ProductCodes.query.all()
-            product_code_list = []
-            for i in product_codes_collection:
-                product_code_list.append(i.product_code)
 
-            # return jsonify({
-            #     'success': True,
-            #     'warehouse_list': warehouse_list,
-            #     'items_list': items_list,
-            #     'codes': product_code_list
-            # })
-
-            # dodelat warehouselist a product code list
             Message = {"items_list": items_list}
 
             return Message

@@ -65,7 +65,7 @@
                         document.getElementById("exp-date" + stockID).innerHTML = expVal
                         document.getElementById("prod-code" + stockID).innerHTML = codeVal
                         document.getElementById("warehouse" + stockID).innerHTML = warehouseIdVal
-                        document.getElementById("unit" + stockID).innerHTML = new_stock_item['product_code']
+                        document.getElementById("unit" + stockID).innerHTML = new_stock_item['unit']
 
                     },
                     error: function (error) {
