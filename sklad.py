@@ -111,24 +111,6 @@ def create_app(test_config=None):
             }
             stock_array.append(stock_item)
 
-
-
-
-        # if request.method == 'POST':
-        #     new_warehouse_name = request.form['warehouse-name']
-        #     new_warehouse_address = request.form['address']
-        #
-        #     user_id = current_user.id
-        #
-        #     warehouse = Warehouse(name=new_warehouse_name,
-        #                           address=new_warehouse_address,
-        #                           user_id=user_id)
-        #
-        #     warehouse.insert()
-        #
-        #     return render_template('home.html', stock_array=stock_array, warehouse_list=warehouse_list)
-
-
         return render_template('home.html', stock_array=stock_array, warehouse_list=warehouse_list)
 
 
@@ -358,15 +340,25 @@ def create_app(test_config=None):
 
 
         product_codes_collection = ProductCodes.query.all()
-
-
         product_code_list = []
 
         for i in product_codes_collection:
             product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
 
-        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list)
+
+        warehouse_collection = Warehouse.query.filter_by(user_id=current_user.id)
+        warehouse_list = []
+
+        for i in warehouse_collection:
+            warehouse_list.append({
+                "id": i.id,
+                "name": i.name,
+                "address": i.address})
+
+
+
+        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list, warehouse_list=warehouse_list)
 
 
 

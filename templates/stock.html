@@ -13,6 +13,7 @@
 
 var stock_array = {{stock_array | tojson}};
 var product_code_list = {{product_code_list | tojson}}
+var warehouse_list = {{warehouse_list | tojson}}
 
 
 
@@ -109,11 +110,18 @@ var product_code_list = {{product_code_list | tojson}}
           <input type="date" id="expiration_date" name="expiration_date"><br>
 
           <label for="product_code">Product Code:</label><br>
-          <input type="text" id="product_code" name="product_code"><br>
+          <select  id="product_code" name="product_code">
+          {% for code in product_code_list %}
+              <option value="{{code['code']}}">{{code['code']}}</option>
+          {% endfor %}
+          </select><br>
 
           <label for="warehouse_id">Warehouse ID:</label><br>
-          <input type="text" id="warehouse_id" name="warehouse_id"><br><br>
-
+            <select id="warehouse_id" name="warehouse_id">
+                {% for i in warehouse_list %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+            </select><br>
           <input id="submitBtn" type="submit" value="Submit">
         </form>
 
