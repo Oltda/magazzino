@@ -11,15 +11,11 @@
 
                     for(let y = 0; y < formChildren[i].children.length; y++){
                     formChildren[i].children[y].classList.toggle("editing")
+                        }
+
                     }
 
                 }
-
-            }
-
-
-
-
             }
 
 

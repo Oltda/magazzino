@@ -1,4 +1,86 @@
 
+            function showEdit(element){
+            var formChildren =  element.parentNode.children
+
+            for(let i = 0; i < formChildren.length; i++){
+
+                if(formChildren[i].hasChildNodes() == true){
+
+                    for(let y = 0; y < formChildren[i].children.length; y++){
+                    formChildren[i].children[y].classList.toggle("editing")
+                        }
+
+                    }
+
+                }
+            }
+
+
+                $(".deleteBtn").click(function (e) {
+                codeID = $(this).attr("data-id")
+
+                $(this).parent().parent().hide()
+
+                 $.ajax({
+                 url: '/product-code/' + codeID,
+                 type: "DELETE"
+                    });
+                e.preventDefault();
+            });
+
+
+
+
+
+
+            seznam = []
+            $(".editButton").click(function (e) {
+
+
+                var editCodeID = $(this).attr("data-id")
+
+
+
+                var codeInputId = "codeID" +  editCodeID
+                var unitInputId = "unitID" +  editCodeID
+                var descriptionInputId = "descriptionID" +  editCodeID
+
+                var codeVal = document.getElementById(codeInputId).value
+                var unitVal = document.getElementById(unitInputId).value
+                var descriptionVal = document.getElementById(descriptionInputId).value
+
+
+
+                $.ajax({
+                    url:'/product-code/' + editCodeID,
+                    type: 'PATCH',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                    'edit-product_code':codeVal,
+                     'edit-description':descriptionVal,
+                     'edit-unit':unitVal,
+                    }),
+
+                    success: function (response) {
+                        seznam = response['product_code_list']
+                        console.log(seznam);
+
+
+
+
+                        document.getElementById("code" + editCodeID).innerHTML = codeVal
+                        document.getElementById("unit" + editCodeID).innerHTML = unitVal
+                        document.getElementById("description" + editCodeID).innerHTML = descriptionVal
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                e.preventDefault();
+            });
+
+
 
 
 
@@ -55,3 +137,7 @@
                 });
                 e.preventDefault();
             });
+
+
+
+

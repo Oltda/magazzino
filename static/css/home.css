@@ -9,7 +9,7 @@
 
 }
 
-#stock-table, #warehouse-table td, th{
+#stock-table, #warehouse-table, #product-table td, th{
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;

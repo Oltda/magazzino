@@ -20,6 +20,8 @@ var product_code_list = {{product_code_list | tojson}};
 
 
 
+
+<br>
     <table id="product-table">
         <tr>
             <th>Product code</th>
@@ -30,9 +32,28 @@ var product_code_list = {{product_code_list | tojson}};
 
      {% for item in product_code_list %}
         <tr>
-            <td>{{item.code}}</td>
-            <td>{{item.unit}}</td>
-            <td>{{item.description}}</td>
+            <form>
+            <td>
+                <p class="original-entry" id="code{{item.id}}">{{item.code}}</p>
+                <input class="new-entry" placeholder="product code" id="codeID{{item.id}}" type="text" name="edit-product_code">
+            </td>
+            <td>
+                <p class="original-entry" id="unit{{item.id}}">{{item.unit}}</p>
+                <input class="new-entry" placeholder="unit" id="unitID{{item.id}}" type="text" name="edit-unit">
+            </td>
+            <td>
+                <p class="original-entry" id="description{{item.id}}">{{item.description}}</p>
+                <input class="new-entry" placeholder="description" id="descriptionID{{item.id}}" type="text" name="edit-description">
+            </td>
+
+
+            <td class="btnContainer" >
+                    <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
+                    <input type="submit" class="editButton"  data-id="{{item.id}}">
+            </td>
+
+            <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
+            </form>
         </tr>
         {% endfor %}
     </table>

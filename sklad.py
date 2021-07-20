@@ -196,12 +196,6 @@ def create_app(test_config=None):
                     "address": i.address
                 })
 
-            # return jsonify({
-            #     'success': True,
-            #     'warehouse_list': warehouse_list,
-            #     'edited_warehouse_id': warehouse_patch.id
-            # })
-
             Message = {"warehouse_list": warehouse_list}
 
             return Message
@@ -242,12 +236,7 @@ def create_app(test_config=None):
         product_code_list = []
 
         for i in product_codes_collection:
-            product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
-
-        # return jsonify({
-        #     'success': True,
-        #     'codes_list': product_code_list
-        # })
+            product_code_list.append({"id":i.id, "code": i.product_code, "unit": i.unit, "description": i.description})
 
         return render_template('product-code.html', product_code_list=product_code_list)
 
@@ -275,13 +264,8 @@ def create_app(test_config=None):
             product_code_list = []
 
             for i in product_codes_collection:
-                product_code_list.append({"product_code": i.product_code, "unit": i.unit, "description": i.description})
+                product_code_list.append({"id":i.id, "product_code": i.product_code, "unit": i.unit, "description": i.description})
 
-            # return jsonify({
-            #     'success': True,
-            #     'codes_list': codes_list,
-            #     'new_code_id': code.id
-            # })
 
             Message = {"product_code_list": product_code_list}
 
@@ -289,6 +273,51 @@ def create_app(test_config=None):
 
         except:
             abort(422)
+
+
+
+
+
+    @app.route('/product-code/<int:code_id>', methods=['PATCH'])
+    @login_required
+    def update_code(code_id):
+
+        body = request.get_json()
+
+        try:
+
+            edit_code = body.get('edit-product_code', None)
+            edit_description = body.get('edit-description', None)
+            edit_unit = body.get('edit-unit', None)
+            user_id = current_user.id
+
+            code_patch = ProductCodes.query.filter(ProductCodes.id == code_id).one_or_none()
+
+            code_patch.product_code = edit_code
+            code_patch.description = edit_description
+            code_patch.unit = edit_unit
+
+            code_patch.update()
+
+
+            product_codes_collection = ProductCodes.query.all()
+            product_code_list = []
+
+            for i in product_codes_collection:
+                product_code_list.append({"id": i.id, "product_code": i.product_code, "unit": i.unit, "description": i.description})
+
+
+            Message = {"product_code_list": product_code_list}
+
+            return Message
+
+        except:
+            abort(422)
+
+
+
+
+
 
     @app.route('/product-code/<int:code_id>', methods=['DELETE'])
     @login_required
