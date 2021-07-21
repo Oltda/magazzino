@@ -339,9 +339,12 @@ def create_app(test_config=None):
                                "product_code": i.product_code})
 
 
+
         for i in items_list:
             date = i['expiration_date']
-            print(ExpirationCalculator(date).show_days_left())
+            i['days_left'] = ExpirationCalculator(date).show_days_left()
+
+
 
 
 

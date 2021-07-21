@@ -1,3 +1,16 @@
+
+console.log(stock_array)
+
+console.log(document.querySelectorAll(".expiration"))
+
+exp_column = document.querySelectorAll(".expiration")
+
+for(let i = 0; i < exp_column.length; i++){
+exp_column[i].classList.add(stock_array[i]['days_left'])
+}
+
+
+
             function showEdit(element){
             var formChildren =  element.parentNode.children
 
@@ -74,31 +87,6 @@
                 });
                 e.preventDefault();
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -61,7 +61,7 @@ var warehouse_list = {{warehouse_list | tojson}}
                 {% endif %}
                 {% endfor %}
 
-                <td>
+                <td class="expiration">
                     <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
                     <input class="new-entry" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
                 </td>
