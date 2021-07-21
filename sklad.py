@@ -16,8 +16,8 @@ from flask_cors import CORS, cross_origin
 from database import setup_db, Warehouse, StockItems, ProductCodes, User
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 from forms import LoginForm, RegistrationForm
-
 import os
+from expiration_dates import ExpirationCalculator
 
 
 def create_app(test_config=None):
@@ -337,6 +337,13 @@ def create_app(test_config=None):
                                "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
                                "warehouse_id": i.warehouse_id,
                                "product_code": i.product_code})
+
+
+        for i in items_list:
+            date = i['expiration_date']
+            print(ExpirationCalculator(date).show_days_left())
+
+
 
 
         product_codes_collection = ProductCodes.query.all()
