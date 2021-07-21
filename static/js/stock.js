@@ -6,7 +6,12 @@ console.log(document.querySelectorAll(".expiration"))
 exp_column = document.querySelectorAll(".expiration")
 
 for(let i = 0; i < exp_column.length; i++){
-exp_column[i].classList.add(stock_array[i]['days_left'])
+
+if(stock_array[i]['days_left'] < 10){
+    exp_column[i].classList.add("red")
+}
+
+
 }
 
 
