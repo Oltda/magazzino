@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-database_name = "database_woza4"
+database_name = "magazzino"
 
 #database_name = "stock_database"
 
@@ -42,7 +42,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(12), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    user_warehouse = db.relationship('Warehouse', backref='user', lazy='select')
     user_stock = db.relationship('StockItems', backref='user', lazy='select')
     user_product_codes = db.relationship('ProductCodes', backref='user', lazy='select')
 
@@ -69,31 +68,6 @@ class User(UserMixin, db.Model):
 
 
 
-class Warehouse(db.Model):
-    __tablename__ = 'warehouse'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    address = db.Column(db.String)
-    stock_items = db.relationship('StockItems', backref='warehouse', lazy=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __init__(self, name, address, user_id):
-        self.name = name
-        self.address = address
-        self.user_id = user_id
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
 class StockItems(db.Model):
     __tablename__ = 'stock_items'
 
@@ -101,15 +75,14 @@ class StockItems(db.Model):
     product_name = db.Column(db.String)
     quantity = db.Column(db.Integer)
     expiration_date = db.Column(db.Date, nullable=False)
-    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouse.id'))
     product_code = db.Column(db.String, db.ForeignKey('product_codes.product_code'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, product_name, quantity, expiration_date, warehouse_id, product_code, user_id):
+    def __init__(self, product_name, quantity, expiration_date, product_code, user_id):
         self.product_name = product_name
         self.quantity = quantity
         self.expiration_date = expiration_date
-        self.warehouse_id = warehouse_id
+
         self.product_code = product_code
         self.user_id = user_id
 

@@ -6,22 +6,21 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
     <title>Title</title>
 </head>
-<body>
+
+
+<body onload="checkDate()">
 
 
 <script>
 
 var stock_array = {{stock_array | tojson}};
 var product_code_list = {{product_code_list | tojson}}
-var warehouse_list = {{warehouse_list | tojson}}
-
-
-
-
-
-
 
 </script>
+
+
+
+
 
 
     <table id="stock-table">
@@ -31,7 +30,7 @@ var warehouse_list = {{warehouse_list | tojson}}
             <th>Unit</th>
             <th>Expiration date</th>
             <th>Product Code</th>
-            <th>Warehouse ID</th>
+
         </tr>
 
 
@@ -71,10 +70,6 @@ var warehouse_list = {{warehouse_list | tojson}}
                     <input class="new-entry" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
                 </td>
 
-                <td>
-                    <p class="original-entry" id="warehouse{{item.id}}">{{item.warehouse_id}}</p>
-                    <input class="new-entry" placeholder="product code" id="warehouseID{{item.id}}" type="text" name="edit-warehouse_id">
-                </td>
 
                 <td class="btnContainer">
                     <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
@@ -86,7 +81,6 @@ var warehouse_list = {{warehouse_list | tojson}}
         </tr>
         {% endfor %}
     </table>
-
 
 
 
@@ -116,12 +110,6 @@ var warehouse_list = {{warehouse_list | tojson}}
           {% endfor %}
           </select><br>
 
-          <label for="warehouse_id">Warehouse ID:</label><br>
-            <select id="warehouse_id" name="warehouse_id">
-                {% for i in warehouse_list %}
-                <option value="{{i.id}}">{{i.name}}</option>
-                {% endfor %}
-            </select><br>
           <input id="submitBtn" type="submit" value="Submit">
         </form>
 

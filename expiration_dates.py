@@ -21,7 +21,7 @@ class ExpirationCalculator:
         self.exp_date = exp_date
 
     def show_days_left(self):
-        future_date = datetime.strptime(self.exp_date, '%d-%b-%Y').date()
+        future_date = datetime.strptime(self.exp_date, '%d-%m-%Y').date()
 
         days_left = str(future_date - datetime.now().date())
         days_left = int(days_left.split("days,")[0])

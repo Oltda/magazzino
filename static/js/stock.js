@@ -1,19 +1,19 @@
 
-console.log(stock_array)
 
-console.log(document.querySelectorAll(".expiration"))
 
+
+function checkDate(){
 exp_column = document.querySelectorAll(".expiration")
+    console.log("checked")
 
-for(let i = 0; i < exp_column.length; i++){
+    for(let i = 0; i < exp_column.length; i++){
 
-if(stock_array[i]['days_left'] < 10){
-    exp_column[i].classList.add("red")
+    if(stock_array[i]['days_left'] < 10){
+        exp_column[i].classList.add("red")
+    }
+
+    }
 }
-
-
-}
-
 
 
             function showEdit(element){
@@ -46,13 +46,11 @@ if(stock_array[i]['days_left'] < 10){
                 var quantityInputId = "quantityID" +  stockID
                 var expInputId = "exp-dateID" +  stockID
                 var codeInputId = "prod-codeID" +  stockID
-                var warehouseIdInputId = "warehouseID" +  stockID
 
                 var stockVal = document.getElementById(stockInputId).value
                 var quantityVal = document.getElementById(quantityInputId).value
                 var expVal = document.getElementById(expInputId).value
                 var codeVal = document.getElementById(codeInputId).value
-                var warehouseIdVal = document.getElementById(warehouseIdInputId).value
 
 
 
@@ -65,14 +63,33 @@ if(stock_array[i]['days_left'] < 10){
                     'edit-product_name':stockVal,
                      'edit-quantity':quantityVal,
                      'edit-expiration_date':expVal,
-                     'edit-warehouse_id':warehouseIdVal,
+
                      'edit-product_code':codeVal,
 
                     }),
 
                     success: function (response) {
                         seznam = response['items_list']
-                        console.log(seznam);
+
+
+
+
+
+
+                                          exp_column = document.querySelectorAll(".expiration")
+
+                                          for(let i = 0; i < exp_column.length; i++){
+
+                                                if(seznam[i]['days_left'] < 10){
+                                                    exp_column[i].classList.add("red")
+                                                }else{
+                                                exp_column[i].classList.remove("red")
+                                                }
+
+                                          }
+
+
+
 
                         new_stock_item = seznam[seznam.length -1]
 
@@ -82,7 +99,6 @@ if(stock_array[i]['days_left'] < 10){
                         document.getElementById("quantity" + stockID).innerHTML = quantityVal
                         document.getElementById("exp-date" + stockID).innerHTML = expVal
                         document.getElementById("prod-code" + stockID).innerHTML = codeVal
-                        document.getElementById("warehouse" + stockID).innerHTML = warehouseIdVal
                         document.getElementById("unit" + stockID).innerHTML = new_stock_item['unit']
 
                     },
@@ -118,14 +134,10 @@ if(stock_array[i]['days_left'] < 10){
 
             $("#submitBtn").click(function (e) {
 
-
-
                 var itemName = $("#item-name").val();
                 var quantity = $("#quantity").val();
                 var expDate = $("#expiration_date").val();
                 var prodCode = $("#product_code").val();
-                var warhID = $("#warehouse_id").val();
-
 
 
                 $.ajax({
@@ -137,7 +149,7 @@ if(stock_array[i]['days_left'] < 10){
                      'product_name':itemName,
                      'quantity':quantity,
                      'expiration_date':expDate,
-                     'warehouse_id':warhID,
+
                      'product_code':prodCode
 
                     }),
@@ -182,11 +194,7 @@ if(stock_array[i]['days_left'] < 10){
                         var td5 = document.createElement('td');
                         td5.innerHTML = new_item['product_code']
 
-                        var td6 = document.createElement('td');
-                        td6.innerHTML = new_item['warehouse_id']
 
-                        var td6 = document.createElement('td');
-                        td6.innerHTML = new_item['warehouse_id']
 
 
 
@@ -195,7 +203,7 @@ if(stock_array[i]['days_left'] < 10){
                         row.appendChild(td3);
                         row.appendChild(td4);
                         row.appendChild(td5);
-                        row.appendChild(td6);
+
 
 
 
@@ -206,7 +214,7 @@ if(stock_array[i]['days_left'] < 10){
                         document.getElementById("expiration_date").value = ""
                         document.getElementById("product_code").value = ""
 
-                        document.getElementById("warehouse_id").value = ""
+
 
 
                     },
@@ -216,3 +224,12 @@ if(stock_array[i]['days_left'] < 10){
                 });
                 e.preventDefault();
             })
+
+
+
+
+
+
+
+
+

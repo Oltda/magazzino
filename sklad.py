@@ -13,7 +13,7 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 
-from database import setup_db, Warehouse, StockItems, ProductCodes, User
+from database import setup_db, StockItems, ProductCodes, User
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 from forms import LoginForm, RegistrationForm
 import os
@@ -48,7 +48,7 @@ def create_app(test_config=None):
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
-            return redirect(url_for('show_warehouses'))
+            return redirect(url_for('show_stock_items'))
         form = LoginForm()
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
@@ -56,7 +56,7 @@ def create_app(test_config=None):
                 flash('Wrong username or password')
                 return redirect(url_for('login'))
             login_user(user, remember=form.remember_me.data)
-            return redirect(url_for('show_warehouses'))
+            return redirect(url_for('show_stock_items'))
         return render_template('login.html', form=form)
 
     @app.route('/logout')
@@ -81,133 +81,152 @@ def create_app(test_config=None):
 
 
 
-    @app.route('/warehouse', methods=['GET'])
-    @cross_origin()
-    @login_required
-    def show_warehouses():
-        warehouse_collection = Warehouse.query.all()
-        warehouse_list = []
-
-        for i in warehouse_collection:
-            warehouse_list.append({
-                "id": i.id,
-                "name": i.name,
-                "address": i.address
-            })
-
-        stock = StockItems.query.all()
-
-        stock_array = []
-        for i in stock:
-            code = ProductCodes.query.filter_by(product_code=i.product_code).first()
-            stock_item = {
-                'id': i.id,
-                'name': i.product_name,
-                'quantity': i.quantity,
-                'expiration_date': i.expiration_date.strftime('%d-%b-%Y'),
-                'warehouse_id': i.warehouse_id,
-                'product_code': i.product_code,
-                'unit': code.unit
-            }
-            stock_array.append(stock_item)
-
-        return render_template('home.html', stock_array=stock_array, warehouse_list=warehouse_list)
 
 
 
 
-    @app.route('/warehouse', methods=['POST'])
-    @cross_origin()
-    @login_required
-    def post_warehouse():
 
-        body = request.get_json()
+    #
+    # @app.route('/warehouse', methods=['GET'])
+    # @cross_origin()
+    # @login_required
+    # def show_warehouses():
+    #     warehouse_collection = Warehouse.query.all()
+    #     warehouse_list = []
+    #
+    #     for i in warehouse_collection:
+    #         warehouse_list.append({
+    #             "id": i.id,
+    #             "name": i.name,
+    #             "address": i.address
+    #         })
+    #
+    #     stock = StockItems.query.all()
+    #
+    #     stock_array = []
+    #     for i in stock:
+    #         code = ProductCodes.query.filter_by(product_code=i.product_code).first()
+    #         stock_item = {
+    #             'id': i.id,
+    #             'name': i.product_name,
+    #             'quantity': i.quantity,
+    #             'expiration_date': i.expiration_date.strftime('%d-%m-%Y'),
+    #             'warehouse_id': i.warehouse_id,
+    #             'product_code': i.product_code,
+    #             'unit': code.unit
+    #         }
+    #         stock_array.append(stock_item)
+    #
+    #     return render_template('home.html', stock_array=stock_array, warehouse_list=warehouse_list)
+    #
+    #
+    #
+    #
+    # @app.route('/warehouse', methods=['POST'])
+    # @cross_origin()
+    # @login_required
+    # def post_warehouse():
+    #
+    #     body = request.get_json()
+    #
+    #     new_warehouse_name = body.get('name')
+    #     new_warehouse_address = body.get('address')
+    #     user_id = current_user.id
+    #
+    #
+    #
+    #     warehouse = Warehouse(name=new_warehouse_name,
+    #                           address=new_warehouse_address,
+    #                           user_id=user_id)
+    #
+    #     warehouse.insert()
+    #
+    #
+    #     warehouse_collection = Warehouse.query.all()
+    #     warehouse_list = []
+    #
+    #     for i in warehouse_collection:
+    #         warehouse_list.append({
+    #             "id": i.id,
+    #             "name": i.name,
+    #             "address": i.address
+    #         })
+    #
+    #     Message = {"warehouse_list": warehouse_list}
+    #
+    #     return Message
+    #
+    # @app.route('/warehouse/<int:warehouse_id>', methods=['PATCH'])
+    # @login_required
+    # def edit_warehouse(warehouse_id):
+    #
+    #     body = request.get_json()
+    #
+    #     try:
+    #         edited_name = body.get('edit-name')
+    #         edited_address = body.get('edit-address')
+    #         user_id = current_user.id
+    #
+    #         warehouse_patch = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
+    #
+    #         warehouse_patch.name = edited_name
+    #         warehouse_patch.address = edited_address
+    #
+    #         warehouse_patch.update()
+    #
+    #         warehouse_collection = Warehouse.query.all()
+    #         warehouse_list = []
+    #
+    #         for i in warehouse_collection:
+    #             warehouse_list.append({
+    #                 "id": i.id,
+    #                 "name": i.name,
+    #                 "address": i.address
+    #             })
+    #
+    #         Message = {"warehouse_list": warehouse_list}
+    #
+    #         return Message
+    #
+    #     except:
+    #         abort(422)
+    #
+    # @app.route('/warehouse/<int:warehouse_id>', methods=['DELETE'])
+    # @login_required
+    # def delete_warehouse(warehouse_id):
+    #     try:
+    #         warehouse_to_delete = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
+    #
+    #         if warehouse_to_delete is None:
+    #             abort(404)
+    #
+    #
+    #         stock_to_delete = StockItems.query.filter(StockItems.warehouse_id == warehouse_id).all()
+    #
+    #         for i in stock_to_delete:
+    #             i.delete()
+    #
+    #         warehouse_to_delete.delete()
+    #
+    #         return jsonify({
+    #             'success': True,
+    #             'deleted_warehouse': warehouse_id
+    #         })
+    #     except:
+    #         abort(422)
 
-        new_warehouse_name = body.get('name')
-        new_warehouse_address = body.get('address')
-        user_id = current_user.id
 
 
 
-        warehouse = Warehouse(name=new_warehouse_name,
-                              address=new_warehouse_address,
-                              user_id=user_id)
-
-        warehouse.insert()
 
 
-        warehouse_collection = Warehouse.query.all()
-        warehouse_list = []
-
-        for i in warehouse_collection:
-            warehouse_list.append({
-                "id": i.id,
-                "name": i.name,
-                "address": i.address
-            })
-
-        Message = {"warehouse_list": warehouse_list}
-
-        return Message
-
-    @app.route('/warehouse/<int:warehouse_id>', methods=['PATCH'])
-    @login_required
-    def edit_warehouse(warehouse_id):
-
-        body = request.get_json()
-
-        try:
-            edited_name = body.get('edit-name')
-            edited_address = body.get('edit-address')
-            user_id = current_user.id
-
-            warehouse_patch = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
-
-            warehouse_patch.name = edited_name
-            warehouse_patch.address = edited_address
-
-            warehouse_patch.update()
-
-            warehouse_collection = Warehouse.query.all()
-            warehouse_list = []
-
-            for i in warehouse_collection:
-                warehouse_list.append({
-                    "id": i.id,
-                    "name": i.name,
-                    "address": i.address
-                })
-
-            Message = {"warehouse_list": warehouse_list}
-
-            return Message
-
-        except:
-            abort(422)
-
-    @app.route('/warehouse/<int:warehouse_id>', methods=['DELETE'])
-    @login_required
-    def delete_warehouse(warehouse_id):
-        try:
-            warehouse_to_delete = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
-
-            if warehouse_to_delete is None:
-                abort(404)
 
 
-            stock_to_delete = StockItems.query.filter(StockItems.warehouse_id == warehouse_id).all()
 
-            for i in stock_to_delete:
-                i.delete()
 
-            warehouse_to_delete.delete()
 
-            return jsonify({
-                'success': True,
-                'deleted_warehouse': warehouse_id
-            })
-        except:
-            abort(422)
+
+
 
     @app.route('/product-code', methods=['GET'])
     @login_required
@@ -323,6 +342,9 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+
+
+
     @app.route('/stock-items', methods=['GET'])
     @login_required
     def show_stock_items():
@@ -334,8 +356,8 @@ def create_app(test_config=None):
             items_list.append({"id": i.id,
                                "product_name": i.product_name,
                                "quantity": i.quantity,
-                               "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
-                               "warehouse_id": i.warehouse_id,
+                               "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+
                                "product_code": i.product_code})
 
 
@@ -345,10 +367,6 @@ def create_app(test_config=None):
             i['days_left'] = ExpirationCalculator(date).show_days_left()
 
 
-
-
-
-
         product_codes_collection = ProductCodes.query.all()
         product_code_list = []
 
@@ -356,62 +374,54 @@ def create_app(test_config=None):
             product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
 
-
-        warehouse_collection = Warehouse.query.filter_by(user_id=current_user.id)
-        warehouse_list = []
-
-        for i in warehouse_collection:
-            warehouse_list.append({
-                "id": i.id,
-                "name": i.name,
-                "address": i.address})
+        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list)
 
 
 
-        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list, warehouse_list=warehouse_list)
+    # @app.route('/stock-items/<int:warehouse_id>', methods=['GET'])
+    # @login_required
+    # def show_warehouse_stock(warehouse_id):
+    #
+    #     warehouse = Warehouse.query.get(warehouse_id)
+    #     warehouse_name = warehouse.name
+    #
+    #     stock = StockItems.query.filter_by(warehouse_id=warehouse_id).all()
+    #     stock_array = []
+    #
+    #     for i in stock:
+    #
+    #         code = ProductCodes.query.filter_by(product_code=i.product_code).first()
+    #         stock_item = {
+    #                       'id': i.id,
+    #                       'product_name': i.product_name,
+    #                       'quantity': i.quantity,
+    #                       'expiration_date': i.expiration_date.strftime('%d-%m-%Y'),
+    #                       'warehouse_id': i.warehouse_id,
+    #                       'product_code': i.product_code,
+    #                       'unit': code.unit
+    #                       }
+    #         stock_array.append(stock_item)
+    #
+    #
+    #     product_codes_collection = ProductCodes.query.all()
+    #     product_code_list = []
+    #
+    #     for i in product_codes_collection:
+    #         product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
+    #
+    #     warehouse_collection = Warehouse.query.all()
+    #     warehouse_list = []
+    #
+    #     for i in warehouse_collection:
+    #         warehouse_list.append({
+    #             "id": i.id,
+    #             "name": i.name,
+    #             "address": i.address})
+    #
+    #     return render_template('stock.html', stock_array=stock_array, product_code_list=product_code_list,
+    #                            warehouse_list=warehouse_list, warehouse_id=warehouse_id, warehouse_name=warehouse_name)
 
 
-
-    @app.route('/stock-items/<int:warehouse_id>', methods=['GET'])
-    @login_required
-    def show_warehouse_stock(warehouse_id):
-
-        warehouse = Warehouse.query.get(warehouse_id)
-
-        stock = StockItems.query.filter_by(warehouse_id=warehouse_id).all()
-        stock_array = []
-
-        for i in stock:
-
-            code = ProductCodes.query.filter_by(product_code=i.product_code).first()
-            stock_item = {
-                          'id': i.id,
-                          'product_name': i.product_name,
-                          'quantity': i.quantity,
-                          'expiration_date': i.expiration_date.strftime('%d-%b-%Y'),
-                          'warehouse_id': i.warehouse_id,
-                          'product_code': i.product_code,
-                          'unit': code.unit
-                          }
-            stock_array.append(stock_item)
-
-
-        product_codes_collection = ProductCodes.query.all()
-        product_code_list = []
-
-        for i in product_codes_collection:
-            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
-
-        warehouse_collection = Warehouse.query.all()
-        warehouse_list = []
-
-        for i in warehouse_collection:
-            warehouse_list.append({
-                "id": i.id,
-                "name": i.name,
-                "address": i.address})
-
-        return render_template('stock.html', stock_array=stock_array, product_code_list=product_code_list)
 
     @app.route('/stock-items', methods=['POST'])
     @login_required
@@ -422,13 +432,12 @@ def create_app(test_config=None):
             new_product_name = body.get('product_name', None)
             new_quantity = int(body.get('quantity', None))
             new_expiration_date = body.get('expiration_date', None)
-            warehouse_id = int(body.get('warehouse_id', None))
             product_code = body.get('product_code', None)
 
             user_id = current_user.id
 
             item = StockItems(product_name=new_product_name, quantity=new_quantity,
-                              expiration_date=new_expiration_date, warehouse_id=warehouse_id,
+                              expiration_date=new_expiration_date,
                               product_code=product_code, user_id=user_id)
 
             item.insert()
@@ -440,8 +449,8 @@ def create_app(test_config=None):
                             "id": i.id,
                             "product_name": i.product_name,
                             "quantity": i.quantity,
-                            "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
-                            "warehouse_id": i.warehouse_id,
+                            "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+
                             "product_code": i.product_code,
                             "user_id": i.user_id
                             })
@@ -458,6 +467,8 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+
+
     @app.route('/stock-items/<int:stock_id>', methods=['PATCH'])
     @login_required
     def edit_stock(stock_id):
@@ -468,7 +479,7 @@ def create_app(test_config=None):
             edit_product_name = body.get('edit-product_name')
             edit_quantity = int(body.get('edit-quantity'))
             edit_expiration_date = body.get('edit-expiration_date')
-            edit_warehouse_id = int(body.get('edit-warehouse_id'))
+
             edit_product_code = body.get('edit-product_code')
 
             stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
@@ -477,19 +488,12 @@ def create_app(test_config=None):
             stock_patch.product_name = edit_product_name
             stock_patch.quantity = edit_quantity
             stock_patch.expiration_date = edit_expiration_date
-            stock_patch.warehouse_id = edit_warehouse_id
+
             stock_patch.product_code = edit_product_code
 
             stock_patch.update()
 
-            warehouse_collection = Warehouse.query.all()
-            warehouse_list = []
-            for i in warehouse_collection:
-                warehouse_list.append({
-                    "id": i.id,
-                    "name": i.name,
-                    "address": i.address
-                })
+
 
 
             product_codes_collection = ProductCodes.query.all()
@@ -503,19 +507,25 @@ def create_app(test_config=None):
             stock_items_collection = StockItems.query.all()
             items_list = []
             for i in stock_items_collection:
+
                 for x in product_code_list:
                     if x['code'] == i.product_code:
                         unit = x['unit']
+
 
                 items_list.append({
                     "id": i.id,
                     "product_name": i.product_name,
                     "quantity": i.quantity,
-                    "expiration_date": i.expiration_date.strftime('%d-%b-%Y'),
-                    "warehouse_id": i.warehouse_id,
+                    "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+
                     "product_code": i.product_code,
                     "unit": unit
                 })
+
+            for i in items_list:
+                date = i['expiration_date']
+                i['days_left'] = ExpirationCalculator(date).show_days_left()
 
 
             Message = {"items_list": items_list}
