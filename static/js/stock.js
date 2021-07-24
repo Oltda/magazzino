@@ -112,21 +112,17 @@ exp_column = document.querySelectorAll(".expiration")
 
 
 
-            function deleteStock(){
-             var stockID = $(this).attr("data-id")
+                $(".deleteBtn").click(function (e) {
+                var stockID = $(this).attr("data-id")
 
-            console.log(stockID)
-            $(this).parent().hide()
+                $(this).parent().parent().hide()
 
                  $.ajax({
-                     url: '/stock-items/' + stockID,
-                     type: "DELETE"
-                 });
-            }
-
-
-            $(".deleteBtn").click(deleteStock)
-
+                 url: '/stock-items/' + stockID,
+                 type: "DELETE"
+                    });
+                e.preventDefault();
+            });
 
 
 
@@ -161,17 +157,20 @@ exp_column = document.querySelectorAll(".expiration")
                         new_item = seznam[seznam.length -1]
 
                         var row = document.createElement("TR");
+                        row.classList.add("row")
                         var tabulka = document.getElementById("stock-table")
                         tabulka.appendChild(row);
 
                         var td1 = document.createElement('td');
                         td1.innerHTML = new_item['product_name']
+                        td1.classList.add("column")
 
                         var td2 = document.createElement('td');
                         td2.innerHTML = new_item['quantity']
+                        td2.classList.add("column")
 
                         var td3 = document.createElement('td');
-
+                        td3.classList.add("column")
 
                         let unit = "";
 
@@ -188,11 +187,13 @@ exp_column = document.querySelectorAll(".expiration")
 
                         var td4 = document.createElement('td');
                         td4.innerHTML = new_item['expiration_date']
+                        td4.classList.add("column")
 
 
 
                         var td5 = document.createElement('td');
                         td5.innerHTML = new_item['product_code']
+                        td5.classList.add("column")
 
 
 

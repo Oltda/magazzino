@@ -20,76 +20,12 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+<div class="main-cont">
 
 
 
-    <table id="stock-table">
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Expiration date</th>
-            <th>Product Code</th>
+<div class="form-container">
 
-        </tr>
-
-
-     {% for item in stock_array %}
-        <tr>
-            <form>
-                <td>
-                    <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
-                    <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
-                </td>
-
-                <td>
-                    <p class="original-entry" id="quantity{{item.id}}">{{item.quantity}}</p>
-                    <input class="new-entry" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
-                </td>
-
-                {% for code in product_code_list %}
-
-                {% if code['code'] == item.product_code %}
-
-                <td>
-                    <p class="original-entry" id="unit{{item.id}}">{{code.unit}}</p>
-
-                </td>
-
-
-                {% endif %}
-                {% endfor %}
-
-                <td class="expiration">
-                    <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
-                    <input class="new-entry" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
-                </td>
-
-                <td>
-                    <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
-                    <input class="new-entry" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
-                </td>
-
-
-                <td class="btnContainer">
-                    <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
-                    <input type="submit" class="editButton"  data-id="{{item.id}}">
-                </td>
-
-                <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
-        </form>
-        </tr>
-        {% endfor %}
-    </table>
-
-
-
-
-
-
-
-
-<br>
         <h2>Stock Items</h2>
 
         <form action="/stock-items" method="post">
@@ -112,6 +48,81 @@ var product_code_list = {{product_code_list | tojson}}
 
           <input id="submitBtn" type="submit" value="Submit">
         </form>
+
+</div>
+
+
+
+
+    <table id="stock-table">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Expiration date</th>
+            <th>Product Code</th>
+
+        </tr>
+
+
+     {% for item in stock_array %}
+        <tr class="row">
+            <form>
+                <td class="column">
+                    <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
+                    <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
+                </td>
+
+                <td class="column">
+                    <p class="original-entry" id="quantity{{item.id}}">{{item.quantity}}</p>
+                    <input class="new-entry" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
+                </td>
+
+                {% for code in product_code_list %}
+
+                {% if code['code'] == item.product_code %}
+
+                <td class="column">
+                    <p class="original-entry" id="unit{{item.id}}">{{code.unit}}</p>
+
+                </td>
+
+
+                {% endif %}
+                {% endfor %}
+
+                <td class="expiration">
+                    <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
+                    <input class="new-entry" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
+                </td>
+
+                <td class="column">
+                    <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
+                    <input class="new-entry" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
+                </td>
+
+
+                <td class="btnContainer">
+                    <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
+                    <input type="submit" class="editButton"  data-id="{{item.id}}">
+                </td>
+
+                <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
+        </form>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+<br>
+<ul>
+
+    <li><a href="/product-code">Product Codes</a></li>
+</ul><br>
+
+
+
 
 
 
