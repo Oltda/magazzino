@@ -19,29 +19,50 @@ var product_code_list = {{product_code_list | tojson}};
 </script>
 
 
+<div class="form-container">
+
+        <h2>Product Codes</h2>
+
+        <form action="/product-code" method="post">
+
+          <label for="productCode">Product code:</label><br>
+          <input type="text" id="productCode" name="product_code"><br>
+
+          <label for="unit">Unit:</label><br>
+          <input type="text" id="unit" name="unit"><br>
+
+
+          <label for="description">Description:</label><br>
+          <input type="text" id="description" name="description"><br><br>
+
+          <input id="submitBtn" type="submit" value="Submit">
+        </form>
+
+</div>
+<br>
 
 
 <br>
     <table id="product-table">
-        <tr>
-            <th>Product code</th>
+        <tr class="row">
+            <th>Code</th>
             <th>Unit</th>
             <th>Description</th>
         </tr>
 
 
      {% for item in product_code_list %}
-        <tr>
-            <form>
-            <td>
+        <tr class="row">
+            <form id="product-form">
+            <td class="column">
                 <p class="original-entry" id="code{{item.id}}">{{item.code}}</p>
                 <input class="new-entry" placeholder="product code" id="codeID{{item.id}}" type="text" name="edit-product_code">
             </td>
-            <td>
+            <td class="column">
                 <p class="original-entry" id="unit{{item.id}}">{{item.unit}}</p>
                 <input class="new-entry" placeholder="unit" id="unitID{{item.id}}" type="text" name="edit-unit">
             </td>
-            <td>
+            <td class="column">
                 <p class="original-entry" id="description{{item.id}}">{{item.description}}</p>
                 <input class="new-entry" placeholder="description" id="descriptionID{{item.id}}" type="text" name="edit-description">
             </td>
@@ -63,25 +84,6 @@ var product_code_list = {{product_code_list | tojson}};
 
 <br>
 
-        <h2>Product Codes</h2>
-
-        <form action="/product-code" method="post">
-
-          <label for="productCode">Product code:</label><br>
-          <input type="text" id="productCode" name="product_code"><br>
-
-          <label for="unit">Unit:</label><br>
-          <input type="text" id="unit" name="unit"><br>
-
-
-          <label for="description">Description:</label><br>
-          <input type="text" id="description" name="description"><br><br>
-
-          <input id="submitBtn" type="submit" value="Submit">
-        </form>
-
-
-<br>
 
 
 

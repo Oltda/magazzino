@@ -2,18 +2,18 @@
 
 
 
-function checkDate(){
-exp_column = document.querySelectorAll(".expiration")
-    console.log("checked")
+            function checkDate(){
+            exp_column = document.querySelectorAll(".expiration")
+                console.log("checked")
 
-    for(let i = 0; i < exp_column.length; i++){
+                for(let i = 0; i < exp_column.length; i++){
 
-    if(stock_array[i]['days_left'] < 10){
-        exp_column[i].classList.add("red")
-    }
+                if(stock_array[i]['days_left'] < 10){
+                    exp_column[i].classList.add("red")
+                }
 
-    }
-}
+                }
+            }
 
 
             function showEdit(element){
@@ -27,13 +27,16 @@ exp_column = document.querySelectorAll(".expiration")
                     formChildren[i].children[y].classList.toggle("editing")
                     }
 
-                }
+                    }
 
+                }
             }
 
 
 
 
+            function showForm(){
+             document.getElementById("form-cont").classList.toggle("show")
             }
 
 

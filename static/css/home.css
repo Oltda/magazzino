@@ -3,21 +3,51 @@
 }
 
 
-#stock-table, #warehouse-table{
-     margin: auto;
 
 
+
+.table-cont{
+display: inline-block;
 }
 
-#stock-table, #warehouse-table, #product-table td, th{
+
+#stock-table, #product-table td, th{
 
       text-align: left;
       padding: 8px;
-      display: inline-block;
-
 }
 
 
+.window-stock{
+    margin: auto;
+    border: 1px solid red;
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+
+
+.form-container{
+    display: none;
+}
+
+.form-container.show{
+    display: inline-block;
+}
+
+
+#product-table{
+    background: blue;
+    width: 40%;
+
+}
+
+#add-item-btn{
+    width: 100px;
+    height: 100px;
+    background: blue;
+}
 
 
 .red{
@@ -27,6 +57,7 @@
 
 .original-entry{
 display: block;
+
 }
 
 .editButton{
@@ -48,6 +79,7 @@ display: none;
 
 .new-entry.editing{
 display: block;
+
 }
 
 
@@ -77,7 +109,15 @@ width: 70px;
 
 .column, .expiration {
     border: 1px solid black;
+    font-size: 18px;
 }
+
+
+
+.first{
+width: 5%;
+}
+
 
 
 .form-container{
@@ -86,7 +126,7 @@ width: 70px;
     position: relative;
     margin: auto;
     padding: 2%;
-    display: inline-block;
+
     vertical-align: top;
     margin-right: 2%;
 }
@@ -116,4 +156,22 @@ background: yellow;
 
 .main-cont{
 border: 1px solid black;
+}
+
+
+
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+}
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
 }

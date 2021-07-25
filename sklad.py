@@ -84,150 +84,6 @@ def create_app(test_config=None):
 
 
 
-
-
-    #
-    # @app.route('/warehouse', methods=['GET'])
-    # @cross_origin()
-    # @login_required
-    # def show_warehouses():
-    #     warehouse_collection = Warehouse.query.all()
-    #     warehouse_list = []
-    #
-    #     for i in warehouse_collection:
-    #         warehouse_list.append({
-    #             "id": i.id,
-    #             "name": i.name,
-    #             "address": i.address
-    #         })
-    #
-    #     stock = StockItems.query.all()
-    #
-    #     stock_array = []
-    #     for i in stock:
-    #         code = ProductCodes.query.filter_by(product_code=i.product_code).first()
-    #         stock_item = {
-    #             'id': i.id,
-    #             'name': i.product_name,
-    #             'quantity': i.quantity,
-    #             'expiration_date': i.expiration_date.strftime('%d-%m-%Y'),
-    #             'warehouse_id': i.warehouse_id,
-    #             'product_code': i.product_code,
-    #             'unit': code.unit
-    #         }
-    #         stock_array.append(stock_item)
-    #
-    #     return render_template('home.html', stock_array=stock_array, warehouse_list=warehouse_list)
-    #
-    #
-    #
-    #
-    # @app.route('/warehouse', methods=['POST'])
-    # @cross_origin()
-    # @login_required
-    # def post_warehouse():
-    #
-    #     body = request.get_json()
-    #
-    #     new_warehouse_name = body.get('name')
-    #     new_warehouse_address = body.get('address')
-    #     user_id = current_user.id
-    #
-    #
-    #
-    #     warehouse = Warehouse(name=new_warehouse_name,
-    #                           address=new_warehouse_address,
-    #                           user_id=user_id)
-    #
-    #     warehouse.insert()
-    #
-    #
-    #     warehouse_collection = Warehouse.query.all()
-    #     warehouse_list = []
-    #
-    #     for i in warehouse_collection:
-    #         warehouse_list.append({
-    #             "id": i.id,
-    #             "name": i.name,
-    #             "address": i.address
-    #         })
-    #
-    #     Message = {"warehouse_list": warehouse_list}
-    #
-    #     return Message
-    #
-    # @app.route('/warehouse/<int:warehouse_id>', methods=['PATCH'])
-    # @login_required
-    # def edit_warehouse(warehouse_id):
-    #
-    #     body = request.get_json()
-    #
-    #     try:
-    #         edited_name = body.get('edit-name')
-    #         edited_address = body.get('edit-address')
-    #         user_id = current_user.id
-    #
-    #         warehouse_patch = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
-    #
-    #         warehouse_patch.name = edited_name
-    #         warehouse_patch.address = edited_address
-    #
-    #         warehouse_patch.update()
-    #
-    #         warehouse_collection = Warehouse.query.all()
-    #         warehouse_list = []
-    #
-    #         for i in warehouse_collection:
-    #             warehouse_list.append({
-    #                 "id": i.id,
-    #                 "name": i.name,
-    #                 "address": i.address
-    #             })
-    #
-    #         Message = {"warehouse_list": warehouse_list}
-    #
-    #         return Message
-    #
-    #     except:
-    #         abort(422)
-    #
-    # @app.route('/warehouse/<int:warehouse_id>', methods=['DELETE'])
-    # @login_required
-    # def delete_warehouse(warehouse_id):
-    #     try:
-    #         warehouse_to_delete = Warehouse.query.filter(Warehouse.id == warehouse_id).one_or_none()
-    #
-    #         if warehouse_to_delete is None:
-    #             abort(404)
-    #
-    #
-    #         stock_to_delete = StockItems.query.filter(StockItems.warehouse_id == warehouse_id).all()
-    #
-    #         for i in stock_to_delete:
-    #             i.delete()
-    #
-    #         warehouse_to_delete.delete()
-    #
-    #         return jsonify({
-    #             'success': True,
-    #             'deleted_warehouse': warehouse_id
-    #         })
-    #     except:
-    #         abort(422)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @app.route('/product-code', methods=['GET'])
     @login_required
     def show_product_codes():
@@ -342,17 +198,20 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-
-
+    from flask_paginate import Pagination, get_page_parameter
 
     @app.route('/stock-items', methods=['GET'])
     @login_required
     def show_stock_items():
 
-        stock_items_collection = StockItems.query.all()
+
+        page = request.args.get('page', 1, type=int)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).paginate(page=page, per_page=10)
+
+
         items_list = []
 
-        for i in stock_items_collection:
+        for i in stock_paginate.items:
             items_list.append({"id": i.id,
                                "product_name": i.product_name,
                                "quantity": i.quantity,
@@ -374,7 +233,7 @@ def create_app(test_config=None):
             product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
 
-        return render_template('stock.html', stock_array=items_list, product_code_list=product_code_list)
+        return render_template('stock.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
 
 
 

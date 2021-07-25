@@ -20,11 +20,19 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+<ul>
+
+    <li><a href="/product-code">Product Codes</a></li>
+</ul><br>
+
+<div id="add-item-btn" onclick="showForm()">Add Item</div>
+
+
 <div class="main-cont">
 
 
 
-<div class="form-container">
+<div id="form-cont" class="form-container">
 
         <h2>Stock Items</h2>
 
@@ -52,22 +60,25 @@ var product_code_list = {{product_code_list | tojson}}
 </div>
 
 
-
-
+<div class="table-cont">
+<div class="window-stock">
     <table id="stock-table">
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Expiration date</th>
-            <th>Product Code</th>
+        <tr class="row">
+            <th class="column">Product</th>
+            <th class="column">Quantity</th>
+            <th class="column">Unit</th>
+            <th class="column">Expiration date</th>
+            <th class="column">Product Code</th>
 
         </tr>
 
 
      {% for item in stock_array %}
+
+
+
         <tr class="row">
-            <form>
+            <form id="stock-frm">
                 <td class="column">
                     <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
                     <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
@@ -111,19 +122,33 @@ var product_code_list = {{product_code_list | tojson}}
         </form>
         </tr>
         {% endfor %}
+
     </table>
 
+        </div>
+
+    </div>
 </div>
 
-<br>
-<ul>
-
-    <li><a href="/product-code">Product Codes</a></li>
-</ul><br>
 
 
 
 
+{% for page_num in stock_paginate.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+
+{% if page_num %} {% if  stock_paginate.page == page_num %}
+
+<a class="btn btn-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% else %}
+
+<a class="btn btn-outline-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% endif %} {% else %} ... {% endif %} {% endfor %}
 
 
 <script src="static/js/stock.js"></script>

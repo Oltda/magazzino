@@ -97,6 +97,8 @@ class StockItems(db.Model):
     def update(self):
         db.session.commit()
 
+
+
 class ProductCodes(db.Model):
     __tablename__ = 'product_codes'
 
