@@ -198,7 +198,7 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    from flask_paginate import Pagination, get_page_parameter
+
 
     @app.route('/stock-items', methods=['GET'])
     @login_required

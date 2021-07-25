@@ -18,13 +18,6 @@ display: inline-block;
 }
 
 
-.window-stock{
-    margin: auto;
-    border: 1px solid red;
-    height: 80%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
 
 
 
@@ -126,7 +119,6 @@ width: 5%;
     position: relative;
     margin: auto;
     padding: 2%;
-
     vertical-align: top;
     margin-right: 2%;
 }
