@@ -199,6 +199,23 @@ def create_app(test_config=None):
             abort(422)
 
 
+    from flask import make_response
+    from fpdf import FPDF
+    import random
+    from generate_pdf import PdfSheet
+
+    @app.route('/stock-pdf', methods=['GET'])
+    @login_required
+    def download_pdf():
+        user_id = current_user.id
+        selection = StockItems
+        pdf_inst = PdfSheet(user_id)
+
+        return pdf_inst.to_pdf()
+
+
+
+
 
     @app.route('/stock-items', methods=['GET'])
     @login_required
@@ -218,6 +235,10 @@ def create_app(test_config=None):
                                "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
 
                                "product_code": i.product_code})
+
+
+
+        #sorted_list = sorted(items_list, key=lambda i: i['id'])
 
 
 

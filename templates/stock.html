@@ -27,6 +27,8 @@ var product_code_list = {{product_code_list | tojson}}
 
 <div id="add-item-btn" onclick="showForm()">Add Item</div>
 
+<a href="{{url_for('download_pdf')}}">PDF</a>
+<br><br>
 
 <div class="main-cont">
 
@@ -80,7 +82,7 @@ var product_code_list = {{product_code_list | tojson}}
         <tr class="row">
             <form id="stock-frm">
                 <td class="column">
-                    <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
+                    <p class="original-entry" id="stock{{item.id}}">{{item.product_name}} {{item.id}}</p>
                     <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
                 </td>
 
@@ -149,6 +151,11 @@ var product_code_list = {{product_code_list | tojson}}
 </a>
 
 {% endif %} {% else %} ... {% endif %} {% endfor %}
+
+
+
+
+
 
 
 <script src="static/js/stock.js"></script>
