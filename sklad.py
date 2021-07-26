@@ -223,7 +223,7 @@ def create_app(test_config=None):
 
 
         page = request.args.get('page', 1, type=int)
-        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).paginate(page=page, per_page=10)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=10)
 
 
         items_list = []
@@ -242,6 +242,8 @@ def create_app(test_config=None):
 
 
 
+
+
         for i in items_list:
             date = i['expiration_date']
             i['days_left'] = ExpirationCalculator(date).show_days_left()
@@ -257,49 +259,6 @@ def create_app(test_config=None):
         return render_template('stock.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
 
 
-
-    # @app.route('/stock-items/<int:warehouse_id>', methods=['GET'])
-    # @login_required
-    # def show_warehouse_stock(warehouse_id):
-    #
-    #     warehouse = Warehouse.query.get(warehouse_id)
-    #     warehouse_name = warehouse.name
-    #
-    #     stock = StockItems.query.filter_by(warehouse_id=warehouse_id).all()
-    #     stock_array = []
-    #
-    #     for i in stock:
-    #
-    #         code = ProductCodes.query.filter_by(product_code=i.product_code).first()
-    #         stock_item = {
-    #                       'id': i.id,
-    #                       'product_name': i.product_name,
-    #                       'quantity': i.quantity,
-    #                       'expiration_date': i.expiration_date.strftime('%d-%m-%Y'),
-    #                       'warehouse_id': i.warehouse_id,
-    #                       'product_code': i.product_code,
-    #                       'unit': code.unit
-    #                       }
-    #         stock_array.append(stock_item)
-    #
-    #
-    #     product_codes_collection = ProductCodes.query.all()
-    #     product_code_list = []
-    #
-    #     for i in product_codes_collection:
-    #         product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
-    #
-    #     warehouse_collection = Warehouse.query.all()
-    #     warehouse_list = []
-    #
-    #     for i in warehouse_collection:
-    #         warehouse_list.append({
-    #             "id": i.id,
-    #             "name": i.name,
-    #             "address": i.address})
-    #
-    #     return render_template('stock.html', stock_array=stock_array, product_code_list=product_code_list,
-    #                            warehouse_list=warehouse_list, warehouse_id=warehouse_id, warehouse_name=warehouse_name)
 
 
 
@@ -407,8 +366,9 @@ def create_app(test_config=None):
                 date = i['expiration_date']
                 i['days_left'] = ExpirationCalculator(date).show_days_left()
 
+            sorted_list = sorted(items_list, key=lambda i: i['id'])
 
-            Message = {"items_list": items_list}
+            Message = {"items_list": sorted_list}
 
             return Message
 

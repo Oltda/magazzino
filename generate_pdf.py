@@ -23,6 +23,14 @@ class PdfSheet:
 
         code = ProductCodes.query.filter(ProductCodes.user_id == self.user_id).all()
 
+        pdf.cell(w=100, h=40, border=1, txt="Product", align="C", ln=0)
+        pdf.cell(w=100, h=40, border=1, txt="Quantity", align="C", ln=0)
+        pdf.cell(w=100, h=40, border=1, txt="Unit", align="C", ln=0)
+        pdf.cell(w=100, h=40, border=1, txt="Expiration date", align="C", ln=0)
+        pdf.cell(w=100, h=40, border=1, txt="Product Code", align="C", ln=1)
+
+        pdf.set_font(family='Times', size=12)
+
         for i in stock:
             pdf.cell(w=100, h=40, border=1, txt=i.product_name, align="C", ln=0)
             pdf.cell(w=100, h=40, border=1, txt=str(i.quantity), align="C", ln=0)
