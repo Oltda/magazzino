@@ -81,6 +81,8 @@ display: block;
 
 .new-entry{
 display: none;
+text-align: center;
+font-size: 18px;
 }
 
 .new-entry.editing{
@@ -97,6 +99,31 @@ margin: 5px;
 outline: none;
 border-bottom: 2px solid black;
 }
+
+
+
+
+
+
+
+.sell-input{
+display: block;
+height: 40px;
+border: none;
+border-bottom: 1px solid grey;
+width: 80%;
+margin: 5px;
+text-align: center;
+font-size: 18px;
+}
+
+
+.sell-input:focus{
+outline: none;
+border-bottom: 2px solid black;
+}
+
+
 
 
 .showEditBtn{
@@ -136,6 +163,27 @@ border-bottom: 2px solid black;
 .editButton:hover{
     background: #1cb01c;
 }
+
+
+
+.sellBtn{
+    padding: 0px;
+    cursor: pointer;
+    width: 50px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    background: #22dd22;
+    border: none;
+}
+
+
+.sellBtn:hover{
+    background: #1cb01c;
+}
+
+
+
 
 
 .deleteBtn{

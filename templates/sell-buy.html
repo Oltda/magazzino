@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
+
+    <title>Title</title>
+</head>
+
+
+<body onload="checkDate()">
+
+
+<script>
+
+var stock_array = {{stock_array | tojson}};
+var product_code_list = {{product_code_list | tojson}}
+
+</script>
+
+
+
+<ul>
+
+    <li><a href="/product-code"><i class="fas fa-barcode fa-2x">  Product Codes</i> </a></li>
+</ul><br>
+
+
+
+<a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-5x"> PDF</i> </a>
+<br><br>
+
+
+<div id="exp_notif" ></div>
+<br><br>
+
+
+<div class="main-cont">
+
+
+
+
+<div class="table-cont">
+
+    <table id="stock-table">
+        <tr class="row">
+            <th class="column">Product</th>
+            <th class="column">Quantity</th>
+            <th class="column">Unit</th>
+            <th class="column">Expiration date</th>
+            <th class="column">Product Code</th>
+
+        </tr>
+
+
+     {% for item in stock_array %}
+
+
+
+        <tr class="row">
+            <form id="stock-frm">
+                <td class="column">
+                    <p id="stock{{item.id}}">{{item.product_name}}</p>
+                </td>
+
+                <td class="column">
+
+                    <input class="sell-input" value="{{item.quantity}}" id="quantityID{{item.id}}"  type="number" name="edit-quantity">
+                </td>
+
+                {% for code in product_code_list %}
+
+                {% if code['code'] == item.product_code %}
+
+                <td class="column">
+                    <p id="unit{{item.id}}">{{code.unit}}</p>
+
+                </td>
+
+
+                {% endif %}
+                {% endfor %}
+
+                <td class="expiration">
+                    <p id="exp-date{{item.id}}">{{item.expiration_date}}</p>
+                </td>
+
+                <td class="column">
+                    <p id="prod-code{{item.id}}">{{item.product_code}}</p>
+                </td>
+
+
+                <td class="btnContainer">
+                    <input type="submit" class="sellBtn"  data-id="{{item.id}}" value="Save">
+                </td>
+
+        </form>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+{% for page_num in stock_paginate.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+
+{% if page_num %} {% if  stock_paginate.page == page_num %}
+
+<a class="btn btn-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% else %}
+
+<a class="btn btn-outline-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% endif %} {% else %} ... {% endif %} {% endfor %}
+
+
+
+
+
+
+
+<script src="static/js/sell-buy.js"></script>
+
+
+</body>
+</html>

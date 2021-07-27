@@ -196,6 +196,112 @@ def create_app(test_config=None):
 
 
 
+    @app.route('/sell-buy', methods=['GET'])
+    @login_required
+    def view_sell_buy_stock():
+
+
+        page = request.args.get('page', 1, type=int)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=10)
+
+
+        items_list = []
+
+        for i in stock_paginate.items:
+            items_list.append({"id": i.id,
+                               "product_name": i.product_name,
+                               "quantity": i.quantity,
+                               "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+
+                               "product_code": i.product_code})
+
+
+        for i in items_list:
+            date = i['expiration_date']
+            i['days_left'] = ExpirationCalculator(date).show_days_left()
+
+
+        product_codes_collection = ProductCodes.query.all()
+        product_code_list = []
+
+        for i in product_codes_collection:
+            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
+
+
+        return render_template('sell-buy.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
+
+
+
+
+
+    @app.route('/sell-buy/<int:stock_id>', methods=['PATCH'])
+    @login_required
+    def sell_buy_stock(stock_id):
+
+        body = request.get_json()
+        try:
+            edit_quantity = int(body.get('edit-quantity'))
+
+
+            stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
+
+
+            stock_patch.quantity = edit_quantity
+
+            stock_patch.update()
+
+
+
+
+            product_codes_collection = ProductCodes.query.all()
+            product_code_list = []
+
+            for i in product_codes_collection:
+                product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
+
+
+
+            stock_items_collection = StockItems.query.all()
+            items_list = []
+            for i in stock_items_collection:
+
+                for x in product_code_list:
+                    if x['code'] == i.product_code:
+                        unit = x['unit']
+
+
+                items_list.append({
+                    "id": i.id,
+                    "product_name": i.product_name,
+                    "quantity": i.quantity,
+                    "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+
+                    "product_code": i.product_code,
+                    "unit": unit
+                })
+
+            for i in items_list:
+                date = i['expiration_date']
+                i['days_left'] = ExpirationCalculator(date).show_days_left()
+
+            sorted_list = sorted(items_list, key=lambda i: i['id'])
+
+            Message = {"items_list": sorted_list}
+
+            return Message
+
+        except:
+            abort(422)
+
+
+
+
+
+
+
+
+
+
 
     @app.route('/stock-pdf', methods=['GET'])
     @login_required
@@ -228,12 +334,6 @@ def create_app(test_config=None):
                                "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
 
                                "product_code": i.product_code})
-
-
-
-
-
-
 
 
         for i in items_list:
