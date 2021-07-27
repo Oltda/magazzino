@@ -94,7 +94,7 @@
 
                         new_stock_item = seznam[seznam.length -1]
 
-                        console.log(new_stock_item['product_code'])
+
 
                         document.getElementById("stock" + stockID).innerHTML = stockVal
                         document.getElementById("quantity" + stockID).innerHTML = quantityVal

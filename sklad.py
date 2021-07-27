@@ -13,13 +13,13 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 
-from database import setup_db, StockItems, ProductCodes, User
+from database import setup_db, StockItems, ProductCodes, User, Sales
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 from forms import LoginForm, RegistrationForm
 import os
 from expiration_dates import ExpirationCalculator
 from generate_pdf import PdfSheet
-
+from datetime import datetime
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -245,13 +245,31 @@ def create_app(test_config=None):
 
             stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
 
+            original_quantity = stock_patch.quantity
+            new_quantity = edit_quantity
 
             stock_patch.quantity = edit_quantity
 
             stock_patch.update()
 
+            # SALES--------------------------------------------------------------------------
+            sale_patch = Sales.query.filter(Sales.product_id == stock_id).all()
+            #current_date = datetime.now().date()
+            current_date = datetime.strptime('2021-07-29', '%Y-%m-%d').date()
+            sold = original_quantity - new_quantity
+            for i in sale_patch:
+                if i.sale_date is None or i.sale_date == current_date:
+                    i.sale_date = current_date
 
+                    i.sold_quantity = i.sold_quantity + sold
+                    i.update()
+                else:
+                    sale = Sales(sold_product=i.sold_product, sale_date=current_date,
+                                 sold_quantity=sold, product_id=stock_id,
+                                 user_id=current_user.id)
+                    sale.insert()
 
+            # --------------------------------------------------------------------------
 
             product_codes_collection = ProductCodes.query.all()
             product_code_list = []
@@ -367,11 +385,17 @@ def create_app(test_config=None):
 
             user_id = current_user.id
 
+
+
+
+
             item = StockItems(product_name=new_product_name, quantity=new_quantity,
                               expiration_date=new_expiration_date,
                               product_code=product_code, user_id=user_id)
 
             item.insert()
+
+
 
             stock_items_collection = StockItems.query.all()
             items_list = []
@@ -385,6 +409,20 @@ def create_app(test_config=None):
                             "product_code": i.product_code,
                             "user_id": i.user_id
                             })
+
+
+
+            # SALES ------------------------------------------------------------
+            last_item = items_list[len(items_list) -1]
+
+            sale = Sales(sold_product=last_item['product_name'], sale_date=None,
+                         sold_quantity=0, product_id=last_item['id'],
+                         user_id=current_user.id,
+                         )
+            sale.insert()
+
+            # ------------------------------------------------------------
+
 
             product_codes_collection = ProductCodes.query.all()
             product_code_list = []
@@ -472,6 +510,7 @@ def create_app(test_config=None):
     def delete_warehouse_stock(stock_id):
         try:
             stock_to_delete = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
+
 
             if stock_to_delete is None:
                 abort(404)

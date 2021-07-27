@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-database_name = "magazzino"
+database_name = "magazzino11"
 
 #database_name = "stock_database"
 
@@ -44,6 +44,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     user_stock = db.relationship('StockItems', backref='user', lazy='select')
     user_product_codes = db.relationship('ProductCodes', backref='user', lazy='select')
+    sales_data = db.relationship('Sales', backref='user', lazy='select')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -77,6 +78,7 @@ class StockItems(db.Model):
     expiration_date = db.Column(db.Date, nullable=False)
     product_code = db.Column(db.String, db.ForeignKey('product_codes.product_code'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
     def __init__(self, product_name, quantity, expiration_date, product_code, user_id):
         self.product_name = product_name
@@ -127,3 +129,36 @@ class ProductCodes(db.Model):
     def update(self):
         db.session.commit()
 
+
+
+
+
+class Sales(db.Model):
+    __tablename__ = 'sales'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sold_product = db.Column(db.String)
+    sale_date = db.Column(db.Date)
+    sold_quantity = db.Column(db.Integer)
+    product_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+    def __init__(self, sold_product, sale_date, sold_quantity, product_id, user_id):
+        self.sold_product = sold_product
+        self.sale_date = sale_date
+        self.sold_quantity = sold_quantity
+        self.user_id = user_id
+        self.product_id = product_id
+
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
