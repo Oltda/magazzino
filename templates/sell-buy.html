@@ -67,7 +67,7 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="column">
 
-                    <input class="sell-input" value="{{item.quantity}}" id="quantityID{{item.id}}"  type="number" name="edit-quantity">
+                    <input onclick="showSellBtn(this)" class="sell-input" value="{{item.quantity}}" id="quantityID{{item.id}}"  type="number" name="edit-quantity">
                 </td>
 
                 {% for code in product_code_list %}
@@ -92,7 +92,7 @@ var product_code_list = {{product_code_list | tojson}}
                 </td>
 
 
-                <td class="btnContainer">
+                <td class="sellBtnContainer">
                     <input type="submit" class="sellBtn"  data-id="{{item.id}}" value="Save">
                 </td>
 

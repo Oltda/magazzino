@@ -20,6 +20,13 @@
 
 
 
+            function showSellBtn(element){
+                var formChildren = element.parentNode.parentNode.children
+                formChildren[6].classList.add("show")
+
+            }
+
+
 
 
 
@@ -27,7 +34,7 @@
             $(".sellBtn").click(function (e) {
                 var stockID = $(this).attr("data-id")
 
-
+                $(this).parent().removeClass("show")
 
                 var quantityInputId = "quantityID" +  stockID
 
@@ -68,10 +75,9 @@
 
                         new_stock_item = seznam[seznam.length -1]
 
-                        console.log(new_stock_item['product_code'])
 
 
-                        document.getElementById("quantity" + stockID).innerHTML = quantityVal
+
 
 
                     },

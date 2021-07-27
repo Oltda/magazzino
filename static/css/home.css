@@ -184,8 +184,6 @@ border-bottom: 2px solid black;
 
 
 
-
-
 .deleteBtn{
     padding: 0px;
     cursor: pointer;
@@ -204,9 +202,21 @@ border-bottom: 2px solid black;
 .btnContainer{
 height: 60px;
 width: 70px;
-
 padding-left: 8px;
 }
+
+.sellBtnContainer{
+height: 60px;
+width: 70px;
+padding-left: 8px;
+display: none;
+}
+
+.sellBtnContainer.show{
+    display: inline-block;
+}
+
+
 
 .column, .expiration {
     border: 1px solid black;

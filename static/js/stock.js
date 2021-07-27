@@ -41,6 +41,7 @@
             $(".editButton").click(function (e) {
                 var stockID = $(this).attr("data-id")
 
+                //var button = $(this).removeClass("show")
 
                 var stockInputId = "stockID" +  stockID
                 var quantityInputId = "quantityID" +  stockID
