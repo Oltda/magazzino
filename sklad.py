@@ -254,8 +254,8 @@ def create_app(test_config=None):
 
             # SALES--------------------------------------------------------------------------
             sale_patch = Sales.query.filter(Sales.product_id == stock_id).all()
-            #current_date = datetime.now().date()
-            current_date = datetime.strptime('2021-07-29', '%Y-%m-%d').date()
+            current_date = datetime.now().date()
+
             sold = original_quantity - new_quantity
             for i in sale_patch:
                 if i.sale_date is None or i.sale_date == current_date:
