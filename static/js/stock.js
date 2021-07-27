@@ -4,7 +4,8 @@
 
             function checkDate(){
             exp_column = document.querySelectorAll(".expiration")
-                console.log("checked")
+
+            exp_notif = document.getElementById("exp_notif")
 
                 for(let i = 0; i < exp_column.length; i++){
 
@@ -13,6 +14,8 @@
                 }
 
                 }
+
+
             }
 
 
@@ -32,12 +35,6 @@
                 }
             }
 
-
-
-
-            function showForm(){
-             document.getElementById("form-cont").classList.toggle("show")
-            }
 
 
             seznam = []

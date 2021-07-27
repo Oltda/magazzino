@@ -1,13 +1,27 @@
-#stock-table, #warehouse-table{
-    border: 1px solid black;
+
+
+
+ul{
+background: yellow;
+list-style: none;
 }
 
-
+.main-cont{
+border: 1px solid black;
+}
 
 
 
 .table-cont{
 display: inline-block;
+margin-left: 1%;
+border: 1px solid green;
+}
+
+
+
+#stock-table, #warehouse-table{
+    border: 1px solid black;
 }
 
 
@@ -18,13 +32,7 @@ display: inline-block;
 }
 
 
-.form-container{
-    display: none;
-}
 
-.form-container.show{
-    display: inline-block;
-}
 
 
 #product-table{
@@ -40,18 +48,26 @@ display: inline-block;
 }
 
 
+
+
+/* table widgets */
+
+
 .red{
-    background: red;
+    background: #ff7d66;
+}
+
+.red input{
+    background: #ff7d66;
 }
 
 
 .original-entry{
-display: block;
-
+    display: block;
 }
 
 .editButton{
-display: none;
+    display: none;
 }
 
 .original-entry.editing{
@@ -69,32 +85,79 @@ display: none;
 
 .new-entry.editing{
 display: block;
+height: 40px;
+border: none;
+border-bottom: 1px solid grey;
+width: 80%;
+margin: 5px;
+}
 
+
+.new-entry.editing:focus{
+outline: none;
+border-bottom: 2px solid black;
 }
 
 
 .showEditBtn{
-     background: green;
-     padding: 5px;
-     width: 10%;
+     width: 50px;
+     height: 40px;
      cursor: pointer;
-     border-radius: 10px;
      color: white;
+     line-height: 40px;
+     vertical-align: middle;
      text-align: center;
+     background: #1e90ff;
+     padding: 2px;
+
 }
 
-.deleteBtn{
-    width:80%;
-    height:100%;
+.showEditBtn:hover{
+    background:#0080ff;
+}
+
+.showEditBtn.editing{
+    background:#0080ff;
+}
+
+
+.editButton{
+    padding: 0px;
     cursor: pointer;
-    border-radius: 10px;
-    background: #eb2d53;
+    width: 50px;
+    height: 40px;
     color: white;
+    font-weight: bold;
+    background: #22dd22;
+    border: none;
+}
+
+
+.editButton:hover{
+    background: #1cb01c;
+}
+
+
+.deleteBtn{
+    padding: 0px;
+    cursor: pointer;
+    width: 50px;
+    height: 40px;
+    color: red;
+    border: 1px solid red;
+}
+
+.deleteBtn:hover{
+    background: red;
+    color: white;
+    font-weight: bold;
 }
 
 .btnContainer{
 height: 60px;
 width: 70px;
+
+padding-left: 8px;
 }
 
 .column, .expiration {
@@ -102,50 +165,48 @@ width: 70px;
     font-size: 18px;
 }
 
-
-
 .first{
 width: 5%;
 }
 
 
 
+
+
 .form-container{
+    display: inline-block;
+    margin-left: 1%;
     border: 1px solid black;
-    width: 30%;
+    width: 35%;
+    min-width: 400px;
     position: relative;
-    margin: auto;
-    padding: 2%;
+    margin-left: 1%;
     vertical-align: top;
-    margin-right: 2%;
+    margin-bottom: 50px;
 }
 
 .form-container h2{
-background: pink;
-text-align: center;
+    background: pink;
+    text-align: center;
 }
 
 .form-container form{
     position: relative;
     border: 1px solid black;
-    width: 90%;
+
     padding: 5%;
     font-size: 18px;
 }
 
 .form-container form input{
-width: 95%;
-position: relative;
-font-size: 18px;
+    width: 95%;
+    position: relative;
+    font-size: 18px;
 }
 
-ul{
-background: yellow;
-}
 
-.main-cont{
-border: 1px solid black;
-}
+
+
 
 
 

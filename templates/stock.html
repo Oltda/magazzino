@@ -4,6 +4,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
+
     <title>Title</title>
 </head>
 
@@ -22,17 +24,20 @@ var product_code_list = {{product_code_list | tojson}}
 
 <ul>
 
-    <li><a href="/product-code">Product Codes</a></li>
+    <li><a href="/product-code"><i class="fas fa-barcode fa-2x">  Product Codes</i> </a></li>
 </ul><br>
 
-<div id="add-item-btn" onclick="showForm()">Add Item</div>
 
-<a href="{{url_for('download_pdf')}}">PDF</a>
+
+<a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-5x"> PDF</i> </a>
 <br><br>
 
+
+<div id="exp_notif" ></div>
+<br><br>
+
+
 <div class="main-cont">
-
-
 
 <div id="form-cont" class="form-container">
 
@@ -60,6 +65,7 @@ var product_code_list = {{product_code_list | tojson}}
         </form>
 
 </div>
+
 
 
 <div class="table-cont">
@@ -117,10 +123,10 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="btnContainer">
                     <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
-                    <input type="submit" class="editButton"  data-id="{{item.id}}">
+                    <input type="submit" class="editButton"  data-id="{{item.id}}" value="Save">
                 </td>
 
-                <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
+                <td onclick="showEdit(this)"><div class="showEditBtn">Edit</div></td>
         </form>
         </tr>
         {% endfor %}

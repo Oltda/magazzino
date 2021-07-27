@@ -19,7 +19,7 @@ class PdfSheet:
 
         pdf.set_font(family='Times', size=12, style='B')
 
-        stock = StockItems.query.filter(StockItems.user_id == self.user_id).all()
+        stock = StockItems.query.filter(StockItems.user_id == self.user_id).order_by(StockItems.id.asc())
 
         code = ProductCodes.query.filter(ProductCodes.user_id == self.user_id).all()
 

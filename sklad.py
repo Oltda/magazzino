@@ -18,6 +18,7 @@ from flask_login import LoginManager, UserMixin, current_user, login_user, logou
 from forms import LoginForm, RegistrationForm
 import os
 from expiration_dates import ExpirationCalculator
+from generate_pdf import PdfSheet
 
 
 def create_app(test_config=None):
@@ -75,12 +76,6 @@ def create_app(test_config=None):
             user.insert()
             return redirect(url_for('login'))
         return render_template('register.html', form=form)
-
-
-
-
-
-
 
 
 
@@ -199,10 +194,8 @@ def create_app(test_config=None):
             abort(422)
 
 
-    from flask import make_response
-    from fpdf import FPDF
-    import random
-    from generate_pdf import PdfSheet
+
+
 
     @app.route('/stock-pdf', methods=['GET'])
     @login_required
@@ -238,7 +231,6 @@ def create_app(test_config=None):
 
 
 
-        #sorted_list = sorted(items_list, key=lambda i: i['id'])
 
 
 
