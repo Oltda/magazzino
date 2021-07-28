@@ -248,26 +248,44 @@ def create_app(test_config=None):
             original_quantity = stock_patch.quantity
             new_quantity = edit_quantity
 
-            stock_patch.quantity = edit_quantity
 
+
+            stock_patch.quantity = edit_quantity
             stock_patch.update()
 
             # SALES--------------------------------------------------------------------------
-            sale_patch = Sales.query.filter(Sales.product_id == stock_id).all()
             current_date = datetime.now().date()
 
-            sold = original_quantity - new_quantity
-            for i in sale_patch:
-                if i.sale_date is None or i.sale_date == current_date:
-                    i.sale_date = current_date
+            #current_date = datetime.strptime('2021-08-01', '%Y-%m-%d').date()
 
-                    i.sold_quantity = i.sold_quantity + sold
-                    i.update()
-                else:
-                    sale = Sales(sold_product=i.sold_product, sale_date=current_date,
-                                 sold_quantity=sold, product_id=stock_id,
-                                 user_id=current_user.id)
-                    sale.insert()
+            one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(Sales.sale_date == current_date).all()
+
+            print(len(one_sale_patch))
+
+            sold = original_quantity - new_quantity
+            if len(one_sale_patch) == 0:
+                stock = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
+
+
+                sale = Sales(sold_product=stock.product_name, sale_date=current_date,
+                             sold_quantity=sold, product_id=stock_id,
+                             user_id=current_user.id)
+                sale.insert()
+            if len(one_sale_patch) > 0:
+                one_sale_patch[0].sold_product = one_sale_patch[0].sold_product
+                one_sale_patch[0].sale_date = current_date
+                one_sale_patch[0].user_id = current_user.id
+                one_sale_patch[0].product_id = stock_id
+                one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
+                one_sale_patch[0].update()
+
+
+
+
+
+
+
+
 
             # --------------------------------------------------------------------------
 
@@ -412,16 +430,7 @@ def create_app(test_config=None):
 
 
 
-            # SALES ------------------------------------------------------------
-            last_item = items_list[len(items_list) -1]
 
-            sale = Sales(sold_product=last_item['product_name'], sale_date=None,
-                         sold_quantity=0, product_id=last_item['id'],
-                         user_id=current_user.id,
-                         )
-            sale.insert()
-
-            # ------------------------------------------------------------
 
 
             product_codes_collection = ProductCodes.query.all()
