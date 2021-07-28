@@ -254,40 +254,36 @@ def create_app(test_config=None):
             stock_patch.update()
 
             # SALES--------------------------------------------------------------------------
-            current_date = datetime.now().date()
+            if original_quantity > new_quantity:
+                current_date = datetime.now().date()
 
-            #current_date = datetime.strptime('2021-08-01', '%Y-%m-%d').date()
+                #current_date = datetime.strptime('2021-08-01', '%Y-%m-%d').date()
 
-            one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(Sales.sale_date == current_date).all()
+                one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(Sales.sale_date == current_date).all()
 
-            print(len(one_sale_patch))
+                print(len(one_sale_patch))
 
-            sold = original_quantity - new_quantity
-            if len(one_sale_patch) == 0:
-                stock = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
-
-
-                sale = Sales(sold_product=stock.product_name, sale_date=current_date,
-                             sold_quantity=sold, product_id=stock_id,
-                             user_id=current_user.id)
-                sale.insert()
-            if len(one_sale_patch) > 0:
-                one_sale_patch[0].sold_product = one_sale_patch[0].sold_product
-                one_sale_patch[0].sale_date = current_date
-                one_sale_patch[0].user_id = current_user.id
-                one_sale_patch[0].product_id = stock_id
-                one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
-                one_sale_patch[0].update()
+                sold = original_quantity - new_quantity
+                if len(one_sale_patch) == 0:
+                    stock = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
 
 
+                    sale = Sales(sold_product=stock.product_name, sale_date=current_date,
+                                 sold_quantity=sold, product_id=stock_id,
+                                 user_id=current_user.id)
+                    sale.insert()
+                if len(one_sale_patch) > 0:
+                    one_sale_patch[0].sold_product = one_sale_patch[0].sold_product
+                    one_sale_patch[0].sale_date = current_date
+                    one_sale_patch[0].user_id = current_user.id
+                    one_sale_patch[0].product_id = stock_id
+                    one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
+                    one_sale_patch[0].update()
+            else:
+                print("acquisition")
+                # here implement acquisition table
 
 
-
-
-
-
-
-            # --------------------------------------------------------------------------
 
             product_codes_collection = ProductCodes.query.all()
             product_code_list = []
