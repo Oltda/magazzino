@@ -22,15 +22,18 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
-<ul>
+<ul class="nav-bar">
 
-    <li><a href="/product-code"><i class="fas fa-barcode fa-2x">  Product Codes</i> </a></li>
+    <li><a href="/product-code"><i class="fas fa-barcode fa-2x"><p>Product Codes</p></i> </a></li>
+
+    <li><a href="/sell-buy"><i class="fas fa-shopping-cart fa-2x"><p>Sell/Buy</p></i> </a></li>
+
+    <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
 </ul><br>
 
 
 
-<a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-5x"> PDF</i> </a>
-<br><br>
+
 
 
 <div id="exp_notif" ></div>
@@ -89,12 +92,12 @@ var product_code_list = {{product_code_list | tojson}}
             <form id="stock-frm">
                 <td class="column">
                     <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
-                    <input class="new-entry" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
+                    <input class="new-entry" value="{{item.product_name}}" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
                 </td>
 
                 <td class="column">
                     <p class="original-entry" id="quantity{{item.id}}">{{item.quantity}}</p>
-                    <input class="new-entry" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
+                    <input class="new-entry" value="{{item.quantity}}" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
                 </td>
 
                 {% for code in product_code_list %}
@@ -112,12 +115,12 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="expiration">
                     <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
-                    <input class="new-entry" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
+                    <input class="new-entry" value="{{item.expiration_date}}" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
                 </td>
 
                 <td class="column">
                     <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
-                    <input class="new-entry" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
+                    <input class="new-entry" value="{{item.product_code}}" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
                 </td>
 
 

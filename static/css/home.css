@@ -266,6 +266,31 @@ width: 5%;
 
 
 
+.nav-bar{
+background: #cccccc;
+height: 50px;
+padding: 20px;
+}
+
+.nav-bar li{
+color: black;
+display: inline-block;
+margin-right: 30px;
+}
+
+.nav-bar li a{
+color: black;
+}
+
+.nav-bar li a:hover{
+color: white;
+}
+
+
+.nav-bar li a i p{
+font-size: 18px;
+margin-top: 0px;
+}
 
 
 .pagination-page-info {
