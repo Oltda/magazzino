@@ -7,7 +7,8 @@ from flask import (
     session,
     redirect,
     url_for,
-    flash
+    flash,
+    send_file
     )
 
 from flask_sqlalchemy import SQLAlchemy
@@ -528,6 +529,72 @@ def create_app(test_config=None):
             })
         except:
             abort(422)
+
+
+
+
+
+    #graph ______________________________________________________
+    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+    import matplotlib.pyplot as plt
+    import io
+    import seaborn as sns
+
+    @app.route('/graph', methods=['GET', 'POST'])
+    def graph_page():
+        #dates = ProductData("stock.db").get_dates()
+        sales = Sales.query.filter(Sales.product_id == 16)
+
+        sale_dates = []
+        quantity = []
+        for i in sales:
+            sale_dates.append(i.sale_date)
+            quantity.append(i.sold_quantity)
+
+
+            #
+            # x = [1, 4, 6, 8]
+            # dates = [1, 1, 2, 5]
+
+            #plt.plot(x, dates, linestyle='dashed', marker='D')
+
+        plt.plot(sale_dates, quantity, linestyle='dashed', marker='D')
+
+        return render_template("graph_page.html", dates=sale_dates, x=quantity)
+
+
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax = sns.set_style(style="darkgrid")
+
+
+    @app.route('/visualize')
+    def visualize():
+        # sns.lineplot(x,y1,y2)
+        canvas = FigureCanvas(fig)
+        img = io.BytesIO()
+        fig.savefig(img)
+        img.seek(0)
+        return send_file(img, mimetype='img/png')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

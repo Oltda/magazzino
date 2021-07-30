@@ -24,13 +24,14 @@ var product_code_list = {{product_code_list | tojson}}
 
 <ul class="nav-bar">
 
-    <li><a href="/product-code"><i class="fas fa-barcode fa-2x">  Product Codes</i> </a></li>
+    <li><a href="/product-code"><i class="fas fa-barcode fa-2x"><p>  Product Codes</p></i> </a></li>
+    <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p> PDF</p></i> </a></li>
 </ul><br>
 
 
 
-<a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-5x"> PDF</i> </a>
-<br><br>
+
+<br>
 
 
 <div id="exp_notif" ></div>
