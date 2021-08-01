@@ -16,16 +16,17 @@ border: 1px solid black;
 display: inline-block;
 margin-left: 1%;
 border: 1px solid green;
+width: 55%;
 }
 
 
 
-#stock-table, #warehouse-table{
+#stock-table, #code-table, #sell-table{
     border: 1px solid black;
 }
 
 
-#stock-table, #product-table td, th{
+#stock-table, #product-table, #code-table, #sell-table  td, th{
 
       text-align: left;
       padding: 8px;
@@ -221,6 +222,12 @@ display: none;
 .column, .expiration {
     border: 1px solid black;
     font-size: 18px;
+    text-align: center;
+    width: 10%;
+}
+
+.column.prod-name{
+width: 20%;
 }
 
 .first{
@@ -259,7 +266,7 @@ width: 5%;
 .form-container form input{
     width: 95%;
     position: relative;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 
@@ -290,6 +297,36 @@ color: white;
 .nav-bar li a i p{
 font-size: 18px;
 margin-top: 0px;
+}
+
+
+
+
+
+.btn-pagination{
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.btn-pagination:hover{
+    background-color: #ddd;
+}
+
+
+
+.btn-pagination.highlight{
+background-color: #1e90ff;
+}
+
+
+.pagination-cont{
+border: 5px solid pink;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
 }
 
 

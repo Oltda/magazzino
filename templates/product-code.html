@@ -45,7 +45,7 @@ var product_code_list = {{product_code_list | tojson}};
 
 
 <br>
-    <table id="product-table">
+    <table id="code-table">
         <tr class="row">
             <th>Code</th>
             <th>Unit</th>
@@ -74,8 +74,8 @@ var product_code_list = {{product_code_list | tojson}};
                     <button class="deleteBtn original-entry"  data-id="{{item.id}}">Delete</button>
                     <input type="submit" class="editButton"  data-id="{{item.id}}">
             </td>
+            <td onclick="showEdit(this)"><div class="showEditBtn">Edit</div></td>
 
-            <td class="showEditBtn" onclick="showEdit(this)">Edit</td>
             </form>
         </tr>
         {% endfor %}

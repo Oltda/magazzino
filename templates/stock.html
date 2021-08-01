@@ -24,11 +24,14 @@ var product_code_list = {{product_code_list | tojson}}
 
 <ul class="nav-bar">
 
-    <li><a href="/product-code"><i class="fas fa-barcode fa-2x"><p>Product Codes</p></i> </a></li>
+    <li><a href="/product-code"><i class="fas fa-barcode fa-2x"><p>Codes</p></i> </a></li>
 
     <li><a href="/sell-buy"><i class="fas fa-shopping-cart fa-2x"><p>Sell/Buy</p></i> </a></li>
 
-    <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
+     <li><a href="{{url_for('show_history')}}"><i class="fas fa-history fa-2x"><p>History</p></i></a> </li>
+        <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
+
+
 </ul><br>
 
 
@@ -90,7 +93,7 @@ var product_code_list = {{product_code_list | tojson}}
 
         <tr class="row">
             <form id="stock-frm">
-                <td class="column">
+                <td class="column prod-name">
                     <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
                     <input class="new-entry" value="{{item.product_name}}" placeholder="product name" id="stockID{{item.id}}" type="text" name="edit-product_name">
                 </td>
@@ -120,7 +123,11 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="column">
                     <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
-                    <input class="new-entry" value="{{item.product_code}}" placeholder="product code" id="prod-codeID{{item.id}}" type="text" name="edit-product_code">
+                    <select class="new-entry" value="{{item.product_code}}" id="prod-codeID{{item.id}}" name="edit-product_code">
+                         {% for code in product_code_list %}
+                        <option value="{{code['code']}}">{{code['code']}}</option>
+                        {% endfor %}
+                    </select>
                 </td>
 
 
@@ -135,31 +142,33 @@ var product_code_list = {{product_code_list | tojson}}
         {% endfor %}
 
     </table>
-
-
-
-    </div>
-</div>
-
-
-
-
-
+<div class="pagination-cont">
 {% for page_num in stock_paginate.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
 
 {% if page_num %} {% if  stock_paginate.page == page_num %}
 
-<a class="btn btn-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination highlight" href="{{ url_for('show_stock_items', page=page_num) }}">
     {{page_num}}
 </a>
 
 {% else %}
 
-<a class="btn btn-outline-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination" href="{{ url_for('show_stock_items', page=page_num) }}">
     {{page_num}}
 </a>
 
 {% endif %} {% else %} ... {% endif %} {% endfor %}
+</div>
+
+
+    </div>
+            </div>
+
+
+
+
+
+
 
 
 

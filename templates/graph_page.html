@@ -2,16 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
     <title>Title</title>
 </head>
 <body>
-<h1>Graph</h1>
-
-<img src="{{url_for('visualize')}}">
+<h1>Sold Items</h1>
 
 
+<table id="sell-table">
+<tr>
+    <th>Sale Date</th>
+    <th>Product Name</th>
+    <th>Sold</th>
+
+    <th>Bought</th>
+</tr>
+
+{% for i in sale_list %}
+<tr>
+    <td>{{i.sale_date}}</td>
+    <td>{{i.product_name}}</td>
+    <td>{{i.quantity}}</td>
+    <td>{{i.restock_quantity}}</td>
 
 
+
+
+
+</tr>
+
+
+{% endfor %}
+</table>
+
+
+{% for page_num in sales.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+
+{% if page_num %} {% if  sales.page == page_num %}
+
+<a class="btn btn-info nb-4" href="{{ url_for('show_history', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% else %}
+
+<a class="btn btn-outline-info nb-4" href="{{ url_for('show_history', page=page_num) }}">
+    {{page_num}}
+</a>
+
+{% endif %} {% else %} ... {% endif %} {% endfor %}
 
 </body>
 </html>

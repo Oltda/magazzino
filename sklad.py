@@ -228,8 +228,10 @@ def create_app(test_config=None):
         for i in product_codes_collection:
             product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
+        sales = Sales.query.filter(Sales.user_id == current_user.id)
 
-        return render_template('sell-buy.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
+
+        return render_template('sell-buy.html', sales=sales, stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
 
 
 
@@ -249,20 +251,20 @@ def create_app(test_config=None):
             original_quantity = stock_patch.quantity
             new_quantity = edit_quantity
 
-
-
             stock_patch.quantity = edit_quantity
             stock_patch.update()
 
+
+            #current_date = datetime.now().date()
+            current_date = datetime.strptime('2021-08-02', '%Y-%m-%d').date()
+
+
+
             # SALES--------------------------------------------------------------------------
             if original_quantity > new_quantity:
-                current_date = datetime.now().date()
 
-                #current_date = datetime.strptime('2021-08-01', '%Y-%m-%d').date()
-
-                one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(Sales.sale_date == current_date).all()
-
-                print(len(one_sale_patch))
+                one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(
+                    Sales.sale_date == current_date).all()
 
                 sold = original_quantity - new_quantity
                 if len(one_sale_patch) == 0:
@@ -270,19 +272,46 @@ def create_app(test_config=None):
 
 
                     sale = Sales(sold_product=stock.product_name, sale_date=current_date,
-                                 sold_quantity=sold, product_id=stock_id,
-                                 user_id=current_user.id)
+                                 sold_quantity=sold, restock_quantity=0,
+                                 product_id=stock_id, user_id=current_user.id)
+
                     sale.insert()
                 if len(one_sale_patch) > 0:
                     one_sale_patch[0].sold_product = one_sale_patch[0].sold_product
                     one_sale_patch[0].sale_date = current_date
                     one_sale_patch[0].user_id = current_user.id
                     one_sale_patch[0].product_id = stock_id
+                    one_sale_patch[0].restock_quantity = one_sale_patch[0].restock_quantity
                     one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
                     one_sale_patch[0].update()
             else:
-                print("acquisition")
-                # here implement acquisition table
+
+                bought = new_quantity - original_quantity
+
+                one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(
+                    Sales.sale_date == current_date).all()
+
+
+                if len(one_sale_patch) == 0:
+                    stock = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
+
+
+                    sale = Sales(sold_product=stock.product_name, sale_date=current_date,
+                                 sold_quantity=0, restock_quantity=bought,
+                                 product_id=stock_id, user_id=current_user.id)
+
+                    sale.insert()
+
+                if len(one_sale_patch) > 0:
+                    one_sale_patch[0].sold_product = one_sale_patch[0].sold_product
+                    one_sale_patch[0].sale_date = current_date
+                    one_sale_patch[0].user_id = current_user.id
+                    one_sale_patch[0].product_id = stock_id
+                    one_sale_patch[0].restock_quantity = one_sale_patch[0].restock_quantity + bought
+                    one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity
+                    one_sale_patch[0].update()
+
+
 
 
 
@@ -355,7 +384,7 @@ def create_app(test_config=None):
 
 
         page = request.args.get('page', 1, type=int)
-        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=10)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=3)
 
 
         items_list = []
@@ -401,9 +430,6 @@ def create_app(test_config=None):
             user_id = current_user.id
 
 
-
-
-
             item = StockItems(product_name=new_product_name, quantity=new_quantity,
                               expiration_date=new_expiration_date,
                               product_code=product_code, user_id=user_id)
@@ -424,9 +450,6 @@ def create_app(test_config=None):
                             "product_code": i.product_code,
                             "user_id": i.user_id
                             })
-
-
-
 
 
 
@@ -535,47 +558,29 @@ def create_app(test_config=None):
 
 
     #graph ______________________________________________________
-    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-    import matplotlib.pyplot as plt
-    import io
-    import seaborn as sns
+    from graph import SalesDateQuantity
 
-    @app.route('/graph', methods=['GET', 'POST'])
-    def graph_page():
-        #dates = ProductData("stock.db").get_dates()
-        sales = Sales.query.filter(Sales.product_id == 16)
+    @app.route('/history', methods=['GET', 'POST'])
+    def show_history():
 
-        sale_dates = []
-        quantity = []
-        for i in sales:
-            sale_dates.append(i.sale_date)
-            quantity.append(i.sold_quantity)
-
-
-            #
-            # x = [1, 4, 6, 8]
-            # dates = [1, 1, 2, 5]
-
-            #plt.plot(x, dates, linestyle='dashed', marker='D')
-
-        plt.plot(sale_dates, quantity, linestyle='dashed', marker='D')
-
-        return render_template("graph_page.html", dates=sale_dates, x=quantity)
+        page = request.args.get('page', 1, type=int)
+        sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=10)
 
 
 
-    fig, ax = plt.subplots(figsize=(10, 10))
-    ax = sns.set_style(style="darkgrid")
+
+        sale_list = []
+        for i in sales.items:
+            sale_list.append(
+                {'id': i.product_id, 'product_name':i.sold_product,'restock_quantity':i.restock_quantity, 'quantity': i.sold_quantity, 'sale_date': i.sale_date.strftime('%d-%m-%Y')})
 
 
-    @app.route('/visualize')
-    def visualize():
-        # sns.lineplot(x,y1,y2)
-        canvas = FigureCanvas(fig)
-        img = io.BytesIO()
-        fig.savefig(img)
-        img.seek(0)
-        return send_file(img, mimetype='img/png')
+
+        return render_template("graph_page.html", sale_list=sale_list, sales=sales)
+
+
+
+
 
 
 

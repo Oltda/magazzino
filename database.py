@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-database_name = "magazzino11"
+database_name = "magazzino16"
 
 #database_name = "stock_database"
 
@@ -140,14 +140,17 @@ class Sales(db.Model):
     sold_product = db.Column(db.String)
     sale_date = db.Column(db.Date)
     sold_quantity = db.Column(db.Integer)
+    restock_quantity = db.Column(db.Integer)
+
     product_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
-    def __init__(self, sold_product, sale_date, sold_quantity, product_id, user_id):
+    def __init__(self, sold_product, sale_date, sold_quantity, restock_quantity, product_id, user_id):
         self.sold_product = sold_product
         self.sale_date = sale_date
         self.sold_quantity = sold_quantity
+        self.restock_quantity = restock_quantity
         self.user_id = user_id
         self.product_id = product_id
 
@@ -162,3 +165,10 @@ class Sales(db.Model):
 
     def update(self):
         db.session.commit()
+
+
+
+
+
+
+
