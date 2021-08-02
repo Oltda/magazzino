@@ -31,6 +31,7 @@ var product_code_list = {{product_code_list | tojson}}
      <li><a href="{{url_for('show_history')}}"><i class="fas fa-history fa-2x"><p>History</p></i></a> </li>
         <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
 
+    <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt fa-2x"><p>Logout</p></i></a></li>
 
 </ul><br>
 
@@ -47,21 +48,22 @@ var product_code_list = {{product_code_list | tojson}}
 
 <div id="form-cont" class="form-container">
 
-        <h2>Stock Items</h2>
+
 
         <form action="/stock-items" method="post">
+            <h2>Add new item</h2>
           <label for="item-name">Product name:</label><br>
-          <input type="text" id="item-name" name="item-name"><br>
+          <input class="add-imp" type="text" id="item-name" name="item-name"><br>
 
           <label for="quantity">Quantity:</label><br>
-          <input type="text" id="quantity" name="quantity"><br>
+          <input class="add-imp" type="text" id="quantity" name="quantity"><br>
 
 
             <label for="expiration_date">Expiration date:</label><br>
-          <input type="date" id="expiration_date" name="expiration_date"><br>
+          <input class="add-imp" type="date" id="expiration_date" name="expiration_date"><br>
 
           <label for="product_code">Product Code:</label><br>
-          <select  id="product_code" name="product_code">
+          <select class="add-imp"  id="product_code" name="product_code">
           {% for code in product_code_list %}
               <option value="{{code['code']}}">{{code['code']}}</option>
           {% endfor %}

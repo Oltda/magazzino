@@ -64,8 +64,7 @@ def create_app(test_config=None):
     @app.route('/logout')
     def logout():
         logout_user()
-        #return redirect(url_for('login'))
-        return redirect('http://localhost:5000/login')
+        return redirect(url_for('login'))
 
 
     @app.route('/register', methods=['GET', 'POST'])
@@ -384,7 +383,7 @@ def create_app(test_config=None):
 
 
         page = request.args.get('page', 1, type=int)
-        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=3)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=4)
 
 
         items_list = []

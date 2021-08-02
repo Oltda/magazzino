@@ -1,4 +1,8 @@
 
+body {
+  font-family: Helvetica;
+}
+
 
 
 ul{
@@ -7,7 +11,7 @@ list-style: none;
 }
 
 .main-cont{
-border: 1px solid black;
+
 }
 
 
@@ -15,25 +19,51 @@ border: 1px solid black;
 .table-cont{
 display: inline-block;
 margin-left: 1%;
-border: 1px solid green;
 width: 55%;
 }
 
+.table-cont-sell, .table-cont-history{
+width: 55%;
+margin:auto;
+}
+
+.heading{
+text-align:center;
+
+position:relative;
+}
 
 
-#stock-table, #code-table, #sell-table{
-    border: 1px solid black;
+#stock-table tr th{
+    background: #098bdc;
+    color: white;
+
+}
+
+#sell-table tr th{
+    background: #098bdc;
+    color: white;
+
+}
+
+#code-table tr th{
+    background: #098bdc;
+    color: white;
+
 }
 
 
 #stock-table, #product-table, #code-table, #sell-table  td, th{
 
-      text-align: left;
+      text-align: center;
       padding: 8px;
 }
 
 
 
+#sell-table{
+margin:auto;
+}
 
 
 #product-table{
@@ -83,7 +113,7 @@ display: block;
 .new-entry{
 display: none;
 text-align: center;
-font-size: 18px;
+font-size: 16px;
 }
 
 .new-entry.editing{
@@ -93,6 +123,7 @@ border: none;
 border-bottom: 1px solid grey;
 width: 80%;
 margin: 5px;
+background: #f2f2f2;
 }
 
 
@@ -116,6 +147,7 @@ width: 80%;
 margin: 5px;
 text-align: center;
 font-size: 18px;
+background: #f2f2f2;
 }
 
 
@@ -191,7 +223,9 @@ border-bottom: 2px solid black;
     width: 50px;
     height: 40px;
     color: red;
+    background: white;
     border: 1px solid red;
+    font-weight: bold;
 }
 
 .deleteBtn:hover{
@@ -220,15 +254,22 @@ display: none;
 
 
 .column, .expiration {
-    border: 1px solid black;
+
     font-size: 18px;
     text-align: center;
     width: 10%;
+    background: #f2f2f2;
 }
 
 .column.prod-name{
 width: 20%;
 }
+
+.column.code{
+width: 30%;
+}
+
+
 
 .first{
 width: 5%;
@@ -241,23 +282,22 @@ width: 5%;
 .form-container{
     display: inline-block;
     margin-left: 1%;
-    border: 1px solid black;
     width: 35%;
+    height: 480px;
     min-width: 400px;
     position: relative;
     margin-left: 1%;
     vertical-align: top;
     margin-bottom: 50px;
+    box-shadow: -2px 8px 8px #888888;
+  
 }
 
-.form-container h2{
-    background: pink;
-    text-align: center;
-}
+
 
 .form-container form{
     position: relative;
-    border: 1px solid black;
+
 
     padding: 5%;
     font-size: 18px;
@@ -267,16 +307,40 @@ width: 5%;
     width: 95%;
     position: relative;
     font-size: 16px;
+
+}
+
+
+.add-imp{
+height: 30px;
+margin-top: 5px;
+margin-bottom: 5px;
 }
 
 
 
 
 
+
+#submitBtn{
+    background: #1e90ff;
+    height: 40px;
+    border: none;
+    margin-top: 10px;
+    color: white;
+    cursor: pointer;
+
+}
+
+#submitBtn:hover{
+background: #0080ff;
+}
+
 .nav-bar{
 background: #cccccc;
 height: 50px;
 padding: 20px;
+padding-left: 50px;
 }
 
 .nav-bar li{
@@ -296,17 +360,21 @@ color: white;
 
 .nav-bar li a i p{
 font-size: 18px;
-margin-top: 0px;
+margin-top: 4px;
 }
 
-
+.logout{
+float: right;
+}
 
 
 
 .btn-pagination{
   color: black;
+  font-size: 20px;
   float: left;
   padding: 8px 16px;
+  background-color: #f2f2f2;
   text-decoration: none;
 }
 
@@ -322,11 +390,13 @@ background-color: #1e90ff;
 
 
 .pagination-cont{
-border: 5px solid pink;
 
+  width: 400px;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
+  margin-top: 20px;
+  margin-left: 20%;
 }
 
 
