@@ -563,7 +563,7 @@ def create_app(test_config=None):
     def show_history():
 
         page = request.args.get('page', 1, type=int)
-        sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=10)
+        sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=1)
 
 
 

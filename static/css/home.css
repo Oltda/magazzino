@@ -6,14 +6,8 @@ body {
 
 
 ul{
-background: yellow;
 list-style: none;
 }
-
-.main-cont{
-
-}
-
 
 
 .table-cont{
@@ -23,14 +17,14 @@ width: 55%;
 }
 
 .table-cont-sell, .table-cont-history{
-width: 55%;
-margin:auto;
+width: 80%;
+margin: auto;
+
 }
 
 .heading{
-text-align:center;
-
-position:relative;
+    text-align:center;
+    position:relative;
 }
 
 
@@ -63,6 +57,7 @@ position:relative;
 
 #sell-table{
 margin:auto;
+width: 100%;
 }
 
 
@@ -208,7 +203,10 @@ border-bottom: 2px solid black;
     font-weight: bold;
     background: #22dd22;
     border: none;
+
 }
+
+
 
 
 .sellBtn:hover{
@@ -244,11 +242,15 @@ padding-left: 8px;
 height: 60px;
 width: 70px;
 padding-left: 8px;
-display: none;
+opacity: 0;
+transition: all 1s ease;
+pointer-events:none;
 }
 
 .sellBtnContainer.show{
-    display: inline-block;
+
+    pointer-events:auto;
+    opacity: 1;
 }
 
 
@@ -257,8 +259,9 @@ display: none;
 
     font-size: 18px;
     text-align: center;
-    width: 10%;
+    width: 20%;
     background: #f2f2f2;
+
 }
 
 .column.prod-name{
@@ -363,8 +366,24 @@ font-size: 18px;
 margin-top: 4px;
 }
 
+
+
+.pdf{
+float: right;
+}
+
 .logout{
 float: right;
+}
+
+
+.current{
+pointer-events: none;
+color: white;
+}
+
+.current i{
+color: white;
 }
 
 
@@ -376,6 +395,7 @@ float: right;
   padding: 8px 16px;
   background-color: #f2f2f2;
   text-decoration: none;
+
 }
 
 .btn-pagination:hover{
@@ -388,16 +408,44 @@ float: right;
 background-color: #1e90ff;
 }
 
+.wrap{
+
+margin: auto;
+}
 
 .pagination-cont{
 
-  width: 400px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   margin-top: 20px;
-  margin-left: 20%;
+
 }
+
+
+.pagination-cont-hist{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+
+.pagination-cont-sell{
+ width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  align-content: center;
+  margin-top: 20px;
+
+}
+
+
+
+
 
 
 .pagination-page-info {

@@ -24,17 +24,17 @@ var product_code_list = {{product_code_list | tojson}}
 
 <ul class="nav-bar">
 
+           <li><a href="/stock-items"><i class="fas fa-home fa-2x"><p>Home</p></i></a></li>
+
     <li><a href="/product-code"><i class="fas fa-barcode fa-2x"><p>Codes</p></i> </a></li>
 
-    <li><a href="/sell-buy"><i class="fas fa-shopping-cart fa-2x"><p>Sell/Buy</p></i> </a></li>
+    <li><a class="current" href="/sell-buy"><i class="fas fa-shopping-cart fa-2x"><p>Sell/Buy</p></i> </a></li>
 
      <li><a href="{{url_for('show_history')}}"><i class="fas fa-history fa-2x"><p>History</p></i></a> </li>
-        <li><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
-
-    <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt fa-2x"><p>Logout</p></i></a></li>
+     <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt fa-2x"><p>Logout</p></i></a></li>
+    <li class="pdf"><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
 
 </ul><br>
-
 
 
 
@@ -113,32 +113,34 @@ var product_code_list = {{product_code_list | tojson}}
 
 
     </div>
-</div>
 
 
 
 
 
+<div class="pagination-cont-sell">
+    <div class="wrap">
 {% for page_num in stock_paginate.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
 
 {% if page_num %} {% if  stock_paginate.page == page_num %}
 
-<a class="btn btn-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination highlight" href="{{ url_for('show_stock_items', page=page_num) }}">
     {{page_num}}
 </a>
 
 {% else %}
 
-<a class="btn btn-outline-info nb-4" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination" href="{{ url_for('show_stock_items', page=page_num) }}">
     {{page_num}}
 </a>
 
 {% endif %} {% else %} ... {% endif %} {% endfor %}
 
+    </div>
+</div>
 
 
-
-
+</div>
 
 
 <br><br><br>
