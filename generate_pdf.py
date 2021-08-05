@@ -26,20 +26,21 @@ class PdfSheet:
         pdf.cell(w=100, h=40, border=1, txt="Product", align="C", ln=0)
         pdf.cell(w=100, h=40, border=1, txt="Quantity", align="C", ln=0)
         pdf.cell(w=100, h=40, border=1, txt="Unit", align="C", ln=0)
-        pdf.cell(w=100, h=40, border=1, txt="Expiration date", align="C", ln=0)
-        pdf.cell(w=100, h=40, border=1, txt="Product Code", align="C", ln=1)
+        pdf.cell(w=100, h=40, border=1, txt="Product Code", align="C", ln=0)
+        pdf.cell(w=100, h=40, border=1, txt="Expiration Date", align="C", ln=1)
 
         pdf.set_font(family='Times', size=12)
 
         for i in stock:
             pdf.cell(w=100, h=40, border=1, txt=i.product_name, align="C", ln=0)
             pdf.cell(w=100, h=40, border=1, txt=str(i.quantity), align="C", ln=0)
-            for x in code:
-                if i.product_code == x.product_code:
-                    pdf.cell(w=100, h=40, border=1, txt=x.unit, align="C", ln=0)
 
-            pdf.cell(w=100, h=40, border=1, txt=str(i.expiration_date), align="C", ln=0)
-            pdf.cell(w=100, h=40, border=1, txt=str(i.product_code), align="C", ln=1)
+            for x in code:
+                if i.product_code == x.id:
+                    pdf.cell(w=100, h=40, border=1, txt=x.unit, align="C", ln=0)
+                    pdf.cell(w=100, h=40, border=1, txt=str(x.product_code), align="C", ln=0)
+
+            pdf.cell(w=100, h=40, border=1, txt=str(i.expiration_date), align="C", ln=1)
 
 
 
