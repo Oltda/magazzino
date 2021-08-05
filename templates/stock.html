@@ -67,7 +67,7 @@ var product_code_list = {{product_code_list | tojson}}
           <label for="product_code">Product Code:</label><br>
           <select class="add-imp"  id="product_code" name="product_code">
           {% for code in product_code_list %}
-              <option value="{{code['code']}}">{{code['code']}}</option>
+              <option value="{{code['code']}}">{{code['code_name']}}</option>
           {% endfor %}
           </select><br>
 
@@ -85,9 +85,9 @@ var product_code_list = {{product_code_list | tojson}}
             <th class="column">Product</th>
             <th class="column">Quantity</th>
             <th class="column">Unit</th>
-            <th class="column">Expiration date</th>
-            <th class="column">Product Code</th>
 
+            <th class="column">Product Code</th>
+            <th class="column">Expiration date</th>
         </tr>
 
 
@@ -107,32 +107,36 @@ var product_code_list = {{product_code_list | tojson}}
                     <input class="new-entry" value="{{item.quantity}}" placeholder="quantity" id="quantityID{{item.id}}" type="text" name="edit-quantity">
                 </td>
 
+
+
+
+
+
+
                 {% for code in product_code_list %}
-
-                {% if code['code'] == item.product_code %}
-
+                {% if code['code'] == item.product_code  %}
                 <td class="column">
-                    <p class="original-entry" id="unit{{item.id}}">{{code.unit}}</p>
-
+                    <p class="original-entry" id="unit{{item.id}}">{{code['unit']}}</p>
                 </td>
 
-
+                <td class="column">
+                    <p class="original-entry" id="prod-code{{item.id}}">{{code['code_name']}}</p>
+                    <select class="new-entry" id="prod-codeID{{item.id}}" name="edit-product_code">
+                         {% for code in product_code_list %}
+                        <option value="{{code['code']}}">{{code['code_name']}}</option>
+                        {% endfor %}
+                    </select>
+                    </td>
                 {% endif %}
                 {% endfor %}
+
+
 
                 <td class="expiration">
                     <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
                     <input class="new-entry" value="{{item.expiration_date}}" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
                 </td>
 
-                <td class="column">
-                    <p class="original-entry" id="prod-code{{item.id}}">{{item.product_code}}</p>
-                    <select class="new-entry" value="{{item.product_code}}" id="prod-codeID{{item.id}}" name="edit-product_code">
-                         {% for code in product_code_list %}
-                        <option value="{{code['code']}}">{{code['code']}}</option>
-                        {% endfor %}
-                    </select>
-                </td>
 
 
                 <td class="btnContainer">

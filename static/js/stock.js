@@ -53,7 +53,10 @@
                 var expVal = document.getElementById(expInputId).value
                 var codeVal = document.getElementById(codeInputId).value
 
-
+                console.log(stockVal)
+                console.log(quantityVal)
+                console.log(expVal)
+                console.log(codeVal)
 
                 $.ajax({
                     url:'/stock-items/' + stockID,
@@ -72,7 +75,7 @@
                     success: function (response) {
                         seznam = response['items_list']
 
-
+                        console.log(seznam)
 
 
 
@@ -99,7 +102,7 @@
                         document.getElementById("stock" + stockID).innerHTML = stockVal
                         document.getElementById("quantity" + stockID).innerHTML = quantityVal
                         document.getElementById("exp-date" + stockID).innerHTML = expVal
-                        document.getElementById("prod-code" + stockID).innerHTML = codeVal
+                        document.getElementById("prod-code" + stockID).innerHTML = new_stock_item['code_name']
                         document.getElementById("unit" + stockID).innerHTML = new_stock_item['unit']
 
                     },

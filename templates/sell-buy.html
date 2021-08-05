@@ -79,15 +79,14 @@ var product_code_list = {{product_code_list | tojson}}
                 </td>
 
                 {% for code in product_code_list %}
-
-                {% if code['code'] == item.product_code %}
-
+                {% if code['code'] == item.product_code  %}
                 <td class="column">
-                    <p id="unit{{item.id}}">{{code.unit}}</p>
-
+                    <p class="original-entry" id="unit{{item.id}}">{{code['unit']}}</p>
                 </td>
 
-
+                <td class="column">
+                    <p id="prod-code{{item.id}}">{{code['code_name']}}</p>
+                </td>
                 {% endif %}
                 {% endfor %}
 
@@ -95,9 +94,7 @@ var product_code_list = {{product_code_list | tojson}}
                     <p id="exp-date{{item.id}}">{{item.expiration_date}}</p>
                 </td>
 
-                <td class="column">
-                    <p id="prod-code{{item.id}}">{{item.product_code}}</p>
-                </td>
+
 
 
                 <td class="sellBtnContainer">

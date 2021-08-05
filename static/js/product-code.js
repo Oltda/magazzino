@@ -111,17 +111,20 @@
                         new_code = seznam[seznam.length -1]
 
                         var row = document.createElement("TR");
-                        var tabulka = document.getElementById("product-table")
+                        var tabulka = document.getElementById("code-table")
                         tabulka.appendChild(row);
 
                         var td = document.createElement('td');
                         td.innerHTML = new_code['product_code']
+                        td.classList.add("column")
 
                         var td2 = document.createElement('td');
                         td2.innerHTML = new_code['unit']
+                        td2.classList.add("column")
 
                         var td3 = document.createElement('td');
                         td3.innerHTML = new_code['description']
+                        td3.classList.add("column")
 
                         row.appendChild(td);
                         row.appendChild(td2);

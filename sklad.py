@@ -84,7 +84,7 @@ def create_app(test_config=None):
     def show_product_codes():
 
 
-        product_codes_collection = ProductCodes.query.all()
+        product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
         product_code_list = []
 
         for i in product_codes_collection:
@@ -112,7 +112,7 @@ def create_app(test_config=None):
 
             code.insert()
 
-            product_codes_collection = ProductCodes.query.all()
+            product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
             product_code_list = []
 
             for i in product_codes_collection:
@@ -225,7 +225,7 @@ def create_app(test_config=None):
         product_code_list = []
 
         for i in product_codes_collection:
-            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
+            product_code_list.append({"code": i.id, "code_name":i.product_code, "unit":i.unit, "description":i.description})
 
         sales = Sales.query.filter(Sales.user_id == current_user.id)
 
@@ -318,7 +318,7 @@ def create_app(test_config=None):
             product_code_list = []
 
             for i in product_codes_collection:
-                product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
+                product_code_list.append({"code": i.id, "code_name":i.product_code, "unit": i.unit, "description": i.description})
 
 
 
@@ -329,6 +329,7 @@ def create_app(test_config=None):
                 for x in product_code_list:
                     if x['code'] == i.product_code:
                         unit = x['unit']
+                        code_name = x['code_name']
 
 
                 items_list.append({
@@ -338,7 +339,8 @@ def create_app(test_config=None):
                     "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
 
                     "product_code": i.product_code,
-                    "unit": unit
+                    "unit": unit,
+                    "code_name":code_name
                 })
 
             for i in items_list:
@@ -346,6 +348,8 @@ def create_app(test_config=None):
                 i['days_left'] = ExpirationCalculator(date).show_days_left()
 
             sorted_list = sorted(items_list, key=lambda i: i['id'])
+
+
 
             Message = {"items_list": sorted_list}
 
@@ -386,9 +390,18 @@ def create_app(test_config=None):
         stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=4)
 
 
+        product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
+        product_code_list = []
+
+        for x in product_codes_collection:
+            product_code_list.append({"code": x.id, "code_name": x.product_code,
+                                      "unit": x.unit, "description": x.description})
+
+
         items_list = []
 
         for i in stock_paginate.items:
+
             items_list.append({"id": i.id,
                                "product_name": i.product_name,
                                "quantity": i.quantity,
@@ -397,16 +410,12 @@ def create_app(test_config=None):
                                "product_code": i.product_code})
 
 
+
+
         for i in items_list:
             date = i['expiration_date']
             i['days_left'] = ExpirationCalculator(date).show_days_left()
 
-
-        product_codes_collection = ProductCodes.query.all()
-        product_code_list = []
-
-        for i in product_codes_collection:
-            product_code_list.append({"code": i.product_code, "unit":i.unit, "description":i.description})
 
 
         return render_template('stock.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
@@ -452,8 +461,9 @@ def create_app(test_config=None):
 
 
 
-            product_codes_collection = ProductCodes.query.all()
+            product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
             product_code_list = []
+
             for i in product_codes_collection:
                 product_code_list.append(i.product_code)
 
@@ -479,13 +489,16 @@ def create_app(test_config=None):
 
             edit_product_code = body.get('edit-product_code')
 
+
+
+
             stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
 
 
             stock_patch.product_name = edit_product_name
             stock_patch.quantity = edit_quantity
             stock_patch.expiration_date = edit_expiration_date
-
+            stock_patch.user_id = current_user.id
             stock_patch.product_code = edit_product_code
 
             stock_patch.update()
@@ -493,11 +506,11 @@ def create_app(test_config=None):
 
 
 
-            product_codes_collection = ProductCodes.query.all()
+            product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
             product_code_list = []
 
             for i in product_codes_collection:
-                product_code_list.append({"code": i.product_code, "unit": i.unit, "description": i.description})
+                product_code_list.append({"code": i.id, "code_name":i.product_code, "unit": i.unit, "description": i.description})
 
 
 
@@ -508,6 +521,7 @@ def create_app(test_config=None):
                 for x in product_code_list:
                     if x['code'] == i.product_code:
                         unit = x['unit']
+                        code_name = x['code_name']
 
 
                 items_list.append({
@@ -517,14 +531,19 @@ def create_app(test_config=None):
                     "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
 
                     "product_code": i.product_code,
-                    "unit": unit
+                    "unit": unit,
+                    "code_name": code_name
                 })
+
+
 
             for i in items_list:
                 date = i['expiration_date']
                 i['days_left'] = ExpirationCalculator(date).show_days_left()
 
             sorted_list = sorted(items_list, key=lambda i: i['id'])
+
+
 
             Message = {"items_list": sorted_list}
 

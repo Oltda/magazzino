@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-database_name = "magazzino16"
+database_name = "magazzino18"
 
 #database_name = "stock_database"
 
@@ -76,7 +76,7 @@ class StockItems(db.Model):
     product_name = db.Column(db.String)
     quantity = db.Column(db.Integer)
     expiration_date = db.Column(db.Date, nullable=False)
-    product_code = db.Column(db.String, db.ForeignKey('product_codes.product_code'))
+    product_code = db.Column(db.Integer, db.ForeignKey('product_codes.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
@@ -105,7 +105,7 @@ class ProductCodes(db.Model):
     __tablename__ = 'product_codes'
 
     id = db.Column(db.Integer, primary_key=True)
-    product_code = db.Column(db.String, unique=True)
+    product_code = db.Column(db.String)
     description = db.Column(db.String)
     unit = db.Column(db.String)
     stock_items = db.relationship('StockItems', backref='product_codes', lazy=True)
