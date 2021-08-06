@@ -4,45 +4,46 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
         <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
 
 </head>
 
-<body>
+<body class="login-body">
 
 
 
 
-<h1>Sign Up</h1>
 
 
-<div>
+
+<div id="loginWrapper">
 
 
 <form action="" method="post">
 
       <div>
-
+            <h1>Sign Up</h1>
               {{ form.hidden_tag() }}
 
               <p>
-              {{ form.username.label }}<br>
-              {{ form.username(size=32)}}<br>
+
+              {{ form.username(size=32, placeholder="username")}}<br>
               </p>
 
               <p>
-                {{ form.email.label }}
-                {{ form.email(size=20) }}
+
+                {{ form.email(size=20, placeholder="email") }}
               </p>
 
               <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=12) }}<br>
+
+                {{ form.password(size=12, placeholder="password") }}<br>
               </p>
 
               <p>
-                {{ form.password2.label }}<br>
-                {{ form.password2(size=12) }}<br>
+
+                {{ form.password2(size=12, placeholder="password again") }}<br>
               </p>
 
               <p> {{ form.submit(class_='submitLogin') }} </p>
@@ -53,7 +54,7 @@
 
 </div>
 
-
+<image src="/static/images/containers2.jpg" id="container-img">
 </body>
 
 </html>

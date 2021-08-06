@@ -385,9 +385,22 @@ def create_app(test_config=None):
     @login_required
     def show_stock_items():
 
+        all_stock = StockItems.query.filter_by(user_id=current_user.id).all()
+
+
+        count_expired = 0
+        for i in all_stock:
+            if ExpirationCalculator(i.expiration_date.strftime('%d-%m-%Y')).show_days_left() < 10:
+                count_expired += 1
+
+
+
+
 
         page = request.args.get('page', 1, type=int)
-        stock_paginate = StockItems.query.filter_by(user_id=current_user.id).order_by(StockItems.id.asc()).paginate(page=page, per_page=4)
+        stock_paginate = StockItems.query.filter_by(user_id=current_user.id)\
+            .order_by(StockItems.id.asc())\
+            .paginate(page=page, per_page=10)
 
 
         product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
@@ -418,7 +431,7 @@ def create_app(test_config=None):
 
 
 
-        return render_template('stock.html', stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
+        return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
 
 
 
@@ -444,28 +457,35 @@ def create_app(test_config=None):
 
             item.insert()
 
+            product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
+            product_code_list = []
+
+            for i in product_codes_collection:
+                product_code_list.append({"code": i.id, "code_name":i.product_code,
+                                          "unit": i.unit, "description": i.description})
+
 
 
             stock_items_collection = StockItems.query.all()
             items_list = []
             for i in stock_items_collection:
+
+                for x in product_code_list:
+                    if x['code'] == i.product_code:
+                        unit = x['unit']
+                        code_name = x['code_name']
+
+
                 items_list.append({
-                            "id": i.id,
-                            "product_name": i.product_name,
-                            "quantity": i.quantity,
-                            "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+                    "id": i.id,
+                    "product_name": i.product_name,
+                    "quantity": i.quantity,
+                    "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+                    "product_code": i.product_code,
+                    "unit": unit,
+                    "code_name": code_name
+                })
 
-                            "product_code": i.product_code,
-                            "user_id": i.user_id
-                            })
-
-
-
-            product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
-            product_code_list = []
-
-            for i in product_codes_collection:
-                product_code_list.append(i.product_code)
 
             Message = {"items_list": items_list}
 
@@ -510,7 +530,8 @@ def create_app(test_config=None):
             product_code_list = []
 
             for i in product_codes_collection:
-                product_code_list.append({"code": i.id, "code_name":i.product_code, "unit": i.unit, "description": i.description})
+                product_code_list.append({"code": i.id, "code_name":i.product_code,
+                                          "unit": i.unit, "description": i.description})
 
 
 
@@ -582,7 +603,7 @@ def create_app(test_config=None):
     def show_history():
 
         page = request.args.get('page', 1, type=int)
-        sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=1)
+        sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=10)
 
 
 

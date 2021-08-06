@@ -5,7 +5,7 @@
             function checkDate(){
             exp_column = document.querySelectorAll(".expiration")
 
-            exp_notif = document.getElementById("exp_notif")
+
 
                 for(let i = 0; i < exp_column.length; i++){
 
@@ -53,10 +53,7 @@
                 var expVal = document.getElementById(expInputId).value
                 var codeVal = document.getElementById(codeInputId).value
 
-                console.log(stockVal)
-                console.log(quantityVal)
-                console.log(expVal)
-                console.log(codeVal)
+
 
                 $.ajax({
                     url:'/stock-items/' + stockID,
@@ -75,7 +72,7 @@
                     success: function (response) {
                         seznam = response['items_list']
 
-                        console.log(seznam)
+
 
 
 
@@ -189,15 +186,19 @@
                         td3.innerHTML = unit
 
 
+
+
                         var td4 = document.createElement('td');
-                        td4.innerHTML = new_item['expiration_date']
+                        td4.innerHTML = new_item['code_name']
                         td4.classList.add("column")
 
-
-
                         var td5 = document.createElement('td');
-                        td5.innerHTML = new_item['product_code']
+                        td5.innerHTML = new_item['expiration_date']
                         td5.classList.add("column")
+
+
+
+
 
 
 

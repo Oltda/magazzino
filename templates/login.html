@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
         <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
 
 </head>
@@ -12,8 +12,7 @@
 <body>
 
 
-<br>
-
+<image src="/static/images/containers.jpg" id="container-img">
 
 
 
@@ -26,7 +25,7 @@
 
       <span>{{message}}<span>
 
-  </div>
+    </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
@@ -40,21 +39,25 @@
 
   <form action="" method="post">
 
-    <div>
+      <p class="stock-icon">
 
+          <i class="fas fa-warehouse fa-7x"></i>
+
+      </p>
+
+    <div>
+<h1 class="login-heading">Stock Manager</h1>
     {{ form.hidden_tag() }}
     <p class="loginField">
-      {{ form.username.label }}<br>
-      {{ form.username(size=32) }}
+      {{ form.username(size=32, placeholder="Username") }}
     </p>
     <p class="loginField">
-      {{ form.password.label }}<br>
-      {{ form.password(size=32) }}
+      {{ form.password(size=32, placeholder="Password") }}
     </p>
     <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
 
     <p>{{ form.submit(class_='submitLogin') }}
-    <div onclick="location.href='{{url_for('register')}}'">New User</div>
+    <button class="new-user-btn" onclick="location.href='{{url_for('register')}}'">New User</button>
     </p>
 
 

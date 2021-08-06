@@ -41,8 +41,16 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+{% if count_expired > 0 %}
+<div id="exp_notif">
+    {% if count_expired == 1 %}
+        {{count_expired}} item is about to expire
+    {% else%}
+        {{count_expired}} items are about to expire
+    {% endif %}
+</div>
+{% endif %}
 
-<div id="exp_notif" ></div>
 <br><br>
 
 
