@@ -19,9 +19,10 @@ database_name = "magazzino19"
 
 #database_name = "stock_database"
 
-database_path = "postgresql://{}:{}@{}/{}".format(
-    'oltda', 'janaoltova', 'localhost:5432', database_name)
+# database_path = "postgresql://{}:{}@{}/{}".format(
+#     'oltda', 'janaoltova', 'localhost:5432', database_name)
 
+database_path = 'postgres://bpmjtwoygmplab:20e7315957a204e3207f8b7cc30a6e3fe85195341bf96140048e1e4835a19de6@ec2-34-194-14-176.compute-1.amazonaws.com:5432/d1esf2jtkddp02'
 
 db = SQLAlchemy()
 
