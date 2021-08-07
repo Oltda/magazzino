@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
     <script src="https://kit.fontawesome.com/24a527e4a1.js" crossorigin="anonymous"></script>
 
-    <title>Title</title>
+    <title>Sell & Buy</title>
 </head>
 
 
@@ -120,13 +120,13 @@ var product_code_list = {{product_code_list | tojson}}
 
 {% if page_num %} {% if  stock_paginate.page == page_num %}
 
-<a class="btn-pagination highlight" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination highlight" href="{{ url_for('view_sell_buy_stock', page=page_num) }}">
     {{page_num}}
 </a>
 
 {% else %}
 
-<a class="btn-pagination" href="{{ url_for('show_stock_items', page=page_num) }}">
+<a class="btn-pagination" href="{{ url_for('view_sell_buy_stock', page=page_num) }}">
     {{page_num}}
 </a>
 
