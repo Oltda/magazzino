@@ -74,6 +74,7 @@ def create_app(test_config=None):
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
             user.insert()
+
             return redirect(url_for('login'))
         return render_template('register.html', form=form)
 
@@ -180,7 +181,7 @@ def create_app(test_config=None):
             if code_to_delete is None:
                 abort(404)
 
-            stock_to_delete = StockItems.query.filter(StockItems.product_code == code_to_delete.product_code).all()
+            stock_to_delete = StockItems.query.filter(StockItems.product_code == code_to_delete.id).all()
             for i in stock_to_delete:
                 i.delete()
 
@@ -378,12 +379,47 @@ def create_app(test_config=None):
         return pdf_inst.to_pdf()
 
 
+    # @app.route('/stock-items/search', methods=['POST'])
+    # @login_required
+    # def search_items():
+    #     body = request.get_json()
+    #     search = body.get('searchTerm', None)
+    #
+    #     selection = StockItems.query.order_by(StockItems.id).filter(StockItems.product_name.ilike('%{}%'.format(search)))
+    #
+    #
+    #     items_list = []
+    #     for i in selection:
+    #         items_list.append({
+    #             "id": i.id,
+    #             "product_name": i.product_name,
+    #             "quantity": i.quantity,
+    #             "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+    #             "product_code": i.product_code,
+    #
+    #         })
+    #
+    #
+    #     Message = {"items_list": items_list}
+    #
+    #     return Message
 
 
 
     @app.route('/stock-items', methods=['GET'])
     @login_required
     def show_stock_items():
+
+        code_check = ProductCodes.query.filter_by(user_id=current_user.id).all()
+        if len(code_check) < 1:
+            code = ProductCodes(
+                product_code="MISC",
+                description="miscellaneous stock",
+                unit="Kg",
+                user_id=current_user.id
+            )
+            code.insert()
+
 
         all_stock = StockItems.query.filter_by(user_id=current_user.id).all()
 
@@ -423,15 +459,14 @@ def create_app(test_config=None):
                                "product_code": i.product_code})
 
 
-
-
         for i in items_list:
             date = i['expiration_date']
             i['days_left'] = ExpirationCalculator(date).show_days_left()
 
 
 
-        return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate, stock_array=items_list, product_code_list=product_code_list)
+        return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate,
+                               stock_array=items_list, product_code_list=product_code_list)
 
 
 
@@ -447,6 +482,10 @@ def create_app(test_config=None):
             new_quantity = int(body.get('quantity', None))
             new_expiration_date = body.get('expiration_date', None)
             product_code = body.get('product_code', None)
+
+
+
+
 
             user_id = current_user.id
 

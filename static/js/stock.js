@@ -154,6 +154,7 @@
                     success: function (response) {
                         seznam = response['items_list']
 
+                        console.log(seznam)
 
                         new_item = seznam[seznam.length -1]
 
@@ -187,7 +188,6 @@
 
 
 
-
                         var td4 = document.createElement('td');
                         td4.innerHTML = new_item['code_name']
                         td4.classList.add("column")
@@ -198,20 +198,11 @@
 
 
 
-
-
-
-
-
-
                         row.appendChild(td1);
                         row.appendChild(td2);
                         row.appendChild(td3);
                         row.appendChild(td4);
                         row.appendChild(td5);
-
-
-
 
 
                         document.getElementById("item-name").value = ""
@@ -230,6 +221,86 @@
                 });
                 e.preventDefault();
             })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//             seznam = []
+//
+//            $("#searchBtn").click(function (e) {
+//
+//                var searchVal = $("#search-inp").val();
+//
+//
+//
+//                $.ajax({
+//                    url:'/stock-items/search',
+//                    type: 'POST',
+//                    dataType: 'json',
+//                    contentType: 'application/json',
+//                    data: JSON.stringify({
+//                     'searchTerm': searchVal
+//
+//                    }),
+//
+//                    success: function (response) {
+//                        seznam = response['items_list']
+//
+//                        console.log(seznam)
+//
+//                        var rows = document.querySelectorAll('.row')
+//
+//                        for(i = 0; i < rows.length; i++){
+//                        rows[i].style.display = "none";
+//                            for(z = 0; z < seznam.length; z++){
+//                                    if(rows[i].classList.contains('ID' + seznam[z]['id'])){
+//
+//                                    rows[i].style.display = "block";
+//                                    }
+//                            }
+//
+//                        }
+//
+//                        console.log(rows)
+//
+//                    },
+//                    error: function (error) {
+//                        console.log(error);
+//                    }
+//                });
+//                e.preventDefault();
+//            })
+
+
+
+
+
+
+
+
+
 
 
 

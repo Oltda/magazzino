@@ -40,6 +40,23 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+
+    {% for message in messages %}
+    <div id="message" class="login">
+
+      <span>{{message}}<span>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+
+
+
 
 {% if count_expired > 0 %}
 <div id="exp_notif">
@@ -89,7 +106,7 @@ var product_code_list = {{product_code_list | tojson}}
 <div class="table-cont">
 
     <table id="stock-table">
-        <tr class="row">
+        <tr >
             <th class="column">Product</th>
             <th class="column">Quantity</th>
             <th class="column">Unit</th>
@@ -103,7 +120,7 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
-        <tr class="row">
+        <tr class="row ID{{item.id}}">
             <form id="stock-frm">
                 <td class="column prod-name">
                     <p class="original-entry" id="stock{{item.id}}">{{item.product_name}}</p>
@@ -183,6 +200,8 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+
+<br>
 
 
 
