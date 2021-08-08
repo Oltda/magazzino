@@ -17,9 +17,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 database_name = "magazzino19"
 
-
-
 database_path = 'postgres://zohgdhzmyigqbu:02b85783284bff4eb876aaf8bd173026386b08c3a9bd75e106786cff8e42bd7c@ec2-54-205-232-84.compute-1.amazonaws.com:5432/d1ubrhld30748t'
+
 db = SQLAlchemy()
 
 

@@ -163,7 +163,11 @@ var code_dictionary = {{code_dictionary | tojson}}
                     <p class="original-entry" id="prod-code{{item.id}}">{{code['code_name']}}</p>
                     <select class="new-entry" id="prod-codeID{{item.id}}" name="edit-product_code">
                          {% for code in product_code_list %}
+                        {% if code['code'] == item.product_code %}
+                        <option selected value="{{code['code']}}">{{code['code_name']}}</option>
+                        {% else %}
                         <option value="{{code['code']}}">{{code['code_name']}}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                     </td>
