@@ -59,22 +59,22 @@
                         seznam = response['items_list']
 
 
-                                          exp_column = document.querySelectorAll(".expiration")
-
-                                          for(let i = 0; i < exp_column.length; i++){
-
-                                                if(seznam[i]['days_left'] < 10){
-                                                    exp_column[i].classList.add("red")
-                                                }else{
-                                                exp_column[i].classList.remove("red")
-                                                }
-
-                                          }
-
-
+//                                          exp_column = document.querySelectorAll(".expiration")
+//
+//                                          for(let i = 0; i < exp_column.length; i++){
+//
+//                                                if(seznam[i]['days_left'] < 10){
+//                                                    exp_column[i].classList.add("red")
+//                                                }else{
+//                                                exp_column[i].classList.remove("red")
+//                                                }
+//
+//                                          }
 
 
-                        new_stock_item = seznam[seznam.length -1]
+
+
+//                        new_stock_item = seznam[seznam.length -1]
 
 
 
