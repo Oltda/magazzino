@@ -213,6 +213,7 @@ width: 100%;
     font-weight: bold;
     font-size: 22px;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 .expiration.red{
@@ -423,22 +424,21 @@ width: 5%;
     display: inline-block;
     margin-left: 1%;
     width: 35%;
-    height: 480px;
+
     min-width: 400px;
     position: relative;
     margin-left: 1%;
     vertical-align: top;
     margin-bottom: 50px;
-    box-shadow: -2px 8px 8px #888888;
-  
+
 }
 
 
 
 .form-container form{
     position: relative;
-
-
+    width: 80%;
+    box-shadow: -2px 8px 8px #888888;
     padding: 5%;
     font-size: 18px;
 }
@@ -447,7 +447,6 @@ width: 5%;
     width: 95%;
     position: relative;
     font-size: 16px;
-
 }
 
 
@@ -458,17 +457,14 @@ margin-bottom: 5px;
 }
 
 
-
-
-
-
 #submitBtn{
     background: #1e90ff;
-    height: 40px;
+    height: 60px;
     border: none;
     margin-top: 10px;
     color: white;
     cursor: pointer;
+    font-size: 18px;
 
 }
 
@@ -476,10 +472,79 @@ margin-bottom: 5px;
 background: #0080ff;
 }
 
+
+
+
+#pdf-menu{
+    width: 83%;
+    margin-top: 2%;
+    margin-bottom: 50px;
+    padding: 5%;
+
+}
+
+#pdf-menu li{
+    margin:auto;
+}
+
+
+
+#pdf-menu button{
+    width: 92%;
+    padding: 1%;
+    margin-bottom: 10px;
+    background: #6495ed;
+    border: none;
+    color: white;
+    height: 70px;
+    cursor: pointer;
+}
+
+
+#pdf-menu button:hover{
+    background: #154eb7;
+}
+
+
+.btn-text{
+font-size: 18px;
+margin-left: 10px;
+font-family: Helvetica;
+}
+
+.pdf-link{
+display: none;
+padding:10px;
+background: #f2f2f2;
+border-bottom: 1px solid #a6a6a6;
+width: 88%;
+font-size: 18px;
+float: left;
+}
+
+.pdf-link.show{
+display: block;
+}
+
+.pdf-link a{
+margin-left: 10px;
+text-decoration: none;
+color: black;
+}
+
+.pdf-link a:hover{
+color: #6495ed;
+}
+
+
+#pdf-btn{
+
+}
+
+
 .nav-bar{
 background: #cccccc;
 height: 70px;
-
 top: 0px;
 margin-top: -20px;
 padding-top: 30px;

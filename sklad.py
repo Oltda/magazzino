@@ -284,8 +284,8 @@ def create_app(test_config=None):
                     one_sale_patch[0].restock_quantity = one_sale_patch[0].restock_quantity
                     one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
                     one_sale_patch[0].update()
-            else:
-
+            #else:
+            elif original_quantity < new_quantity:
                 bought = new_quantity - original_quantity
 
                 one_sale_patch = Sales.query.filter(Sales.product_id == stock_id).filter(
@@ -362,13 +362,6 @@ def create_app(test_config=None):
 
 
 
-
-
-
-
-
-
-
     @app.route('/stock-pdf', methods=['GET'])
     @login_required
     def download_pdf():
@@ -379,30 +372,77 @@ def create_app(test_config=None):
         return pdf_inst.to_pdf()
 
 
-    # @app.route('/stock-items/search', methods=['POST'])
+    @app.route('/stock-category-pdf/<int:code_id>', methods=['GET'])
+    @login_required
+    def download_by_code_pdf(code_id):
+        user_id = current_user.id
+        selection = StockItems
+        pdf_inst = PdfSheet(user_id)
+        return pdf_inst.filter_code_pdf(code_id)
+
+
+
+    # @app.route('/stock-items', methods=['GET'])
     # @login_required
-    # def search_items():
-    #     body = request.get_json()
-    #     search = body.get('searchTerm', None)
+    # def show_stock_items():
     #
-    #     selection = StockItems.query.order_by(StockItems.id).filter(StockItems.product_name.ilike('%{}%'.format(search)))
+    #     code_check = ProductCodes.query.filter_by(user_id=current_user.id).all()
+    #     if len(code_check) < 1:
+    #         code = ProductCodes(
+    #             product_code="MISC",
+    #             description="miscellaneous stock",
+    #             unit="Kg",
+    #             user_id=current_user.id
+    #         )
+    #         code.insert()
+    #
+    #
+    #     all_stock = StockItems.query.filter_by(user_id=current_user.id).all()
+    #
+    #
+    #     count_expired = 0
+    #     for i in all_stock:
+    #         if ExpirationCalculator(i.expiration_date.strftime('%d-%m-%Y')).show_days_left() < 10:
+    #             count_expired += 1
+    #
+    #
+    #     page = request.args.get('page', 1, type=int)
+    #     stock_paginate = StockItems.query.filter_by(user_id=current_user.id)\
+    #         .order_by(StockItems.product_code.asc())\
+    #         .paginate(page=page, per_page=10)
+    #
+    #
+    #     product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
+    #     product_code_list = []
+    #
+    #     for x in product_codes_collection:
+    #         product_code_list.append({"code": x.id, "code_name": x.product_code,
+    #                                   "unit": x.unit, "description": x.description})
     #
     #
     #     items_list = []
-    #     for i in selection:
-    #         items_list.append({
-    #             "id": i.id,
-    #             "product_name": i.product_name,
-    #             "quantity": i.quantity,
-    #             "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
-    #             "product_code": i.product_code,
     #
-    #         })
+    #     for i in stock_paginate.items:
+    #
+    #         items_list.append({"id": i.id,
+    #                            "product_name": i.product_name,
+    #                            "quantity": i.quantity,
+    #                            "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
+    #
+    #                            "product_code": i.product_code})
     #
     #
-    #     Message = {"items_list": items_list}
+    #     for i in items_list:
+    #         date = i['expiration_date']
+    #         i['days_left'] = ExpirationCalculator(date).show_days_left()
     #
-    #     return Message
+    #
+    #
+    #     return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate,
+    #                            stock_array=items_list, product_code_list=product_code_list)
+    #
+
+
 
 
 
@@ -430,12 +470,9 @@ def create_app(test_config=None):
                 count_expired += 1
 
 
-
-
-
         page = request.args.get('page', 1, type=int)
         stock_paginate = StockItems.query.filter_by(user_id=current_user.id)\
-            .order_by(StockItems.id.asc())\
+            .order_by(StockItems.product_code.asc())\
             .paginate(page=page, per_page=10)
 
 
@@ -467,6 +504,7 @@ def create_app(test_config=None):
 
         return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate,
                                stock_array=items_list, product_code_list=product_code_list)
+
 
 
 

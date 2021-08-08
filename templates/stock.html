@@ -13,13 +13,14 @@
 <body onload="checkDate()">
 
 
+
+
 <script>
 
 var stock_array = {{stock_array | tojson}};
 var product_code_list = {{product_code_list | tojson}}
 
 </script>
-
 
 
 <ul class="nav-bar">
@@ -32,10 +33,13 @@ var product_code_list = {{product_code_list | tojson}}
 
      <li><a href="{{url_for('show_history')}}"><i class="fas fa-history fa-2x"><p>History</p></i></a> </li>
 
+
     <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt fa-2x"><p>Logout</p></i></a></li>
-    <li class="pdf"><a href="{{url_for('download_pdf')}}"> <i class="far fa-file-pdf fa-2x"><p>PDF</p></i> </a> </li>
 
 </ul><br>
+
+
+
 
 
 
@@ -58,6 +62,8 @@ var product_code_list = {{product_code_list | tojson}}
 
 
 
+
+
 {% if count_expired > 0 %}
 <div id="exp_notif">
     {% if count_expired == 1 %}
@@ -68,7 +74,6 @@ var product_code_list = {{product_code_list | tojson}}
 </div>
 {% endif %}
 
-<br><br>
 
 
 <div class="main-cont">
@@ -98,8 +103,23 @@ var product_code_list = {{product_code_list | tojson}}
 
           <input id="submitBtn" type="submit" value="Submit">
         </form>
+    <br>
+
+    <ul id="pdf-menu">
+
+        <button id="pdf-btn" onclick="show_links()"> <i class="far fa-file-pdf fa-3x"><span class="btn-text">Download PDF</span></i> </button>
+
+        <li class="pdf-link"><a href="/stock-pdf">All categories</a></li>
+
+         {% for i in product_code_list %}
+        <li class="pdf-link"><a href="/stock-category-pdf/{{i['code']}}">{{i['code_name']}}</a></li>
+        {% endfor %}
+    </ul>
+    <br>
 
 </div>
+
+
 
 
 
@@ -159,7 +179,7 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="expiration">
                     <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
-                    <input class="new-entry" value="{{item.expiration_date}}" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
+                    <input class="new-entry"  placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
                 </td>
 
 
