@@ -31,6 +31,8 @@ def create_app(test_config=None):
 
     app.secret_key = "ytdytftyfjytfjytfjytf"
 
+    login.login_view = 'login'
+
 
     @app.after_request
     def after_request(response):
@@ -47,7 +49,7 @@ def create_app(test_config=None):
         return User.query.get(int(id))
 
 
-    @app.route('/login', methods=['GET', 'POST'])
+    @app.route('/', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
             return redirect(url_for('show_stock_items'))

@@ -3,6 +3,7 @@ body {
   font-family: Helvetica;
 }
 
+
 #container-img{
     position: absolute;
     height:120%;
@@ -19,6 +20,8 @@ body {
     text-align: center;
     top: -100px;
 }
+
+
 
 .login-heading{
     text-align: center;
@@ -182,7 +185,7 @@ list-style: none;
 
 
 
-#exp_notif{
+#exp_notif, .login{
     background: #ff7d66;
     text-align: center;
     color: #800000;
