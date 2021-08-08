@@ -128,15 +128,10 @@ def create_app(test_config=None):
             abort(422)
 
 
-
-
-
     @app.route('/product-code/<int:code_id>', methods=['PATCH'])
     @login_required
     def update_code(code_id):
-
         body = request.get_json()
-
         try:
 
             edit_code = body.get('edit-product_code', None)
@@ -159,17 +154,12 @@ def create_app(test_config=None):
             for i in product_codes_collection:
                 product_code_list.append({"id": i.id, "product_code": i.product_code, "unit": i.unit, "description": i.description})
 
-
             Message = {"product_code_list": product_code_list}
 
             return Message
 
         except:
             abort(422)
-
-
-
-
 
 
     @app.route('/product-code/<int:code_id>', methods=['DELETE'])
@@ -254,8 +244,6 @@ def create_app(test_config=None):
             stock_patch.quantity = edit_quantity
             stock_patch.update()
 
-
-            #current_date = datetime.now().date()
             current_date = datetime.strptime('2021-08-02', '%Y-%m-%d').date()
 
 
@@ -284,7 +272,7 @@ def create_app(test_config=None):
                     one_sale_patch[0].restock_quantity = one_sale_patch[0].restock_quantity
                     one_sale_patch[0].sold_quantity = one_sale_patch[0].sold_quantity + sold
                     one_sale_patch[0].update()
-            #else:
+
             elif original_quantity < new_quantity:
                 bought = new_quantity - original_quantity
 
@@ -360,8 +348,6 @@ def create_app(test_config=None):
             abort(422)
 
 
-
-
     @app.route('/stock-pdf', methods=['GET'])
     @login_required
     def download_pdf():
@@ -379,71 +365,6 @@ def create_app(test_config=None):
         selection = StockItems
         pdf_inst = PdfSheet(user_id)
         return pdf_inst.filter_code_pdf(code_id)
-
-
-
-    # @app.route('/stock-items', methods=['GET'])
-    # @login_required
-    # def show_stock_items():
-    #
-    #     code_check = ProductCodes.query.filter_by(user_id=current_user.id).all()
-    #     if len(code_check) < 1:
-    #         code = ProductCodes(
-    #             product_code="MISC",
-    #             description="miscellaneous stock",
-    #             unit="Kg",
-    #             user_id=current_user.id
-    #         )
-    #         code.insert()
-    #
-    #
-    #     all_stock = StockItems.query.filter_by(user_id=current_user.id).all()
-    #
-    #
-    #     count_expired = 0
-    #     for i in all_stock:
-    #         if ExpirationCalculator(i.expiration_date.strftime('%d-%m-%Y')).show_days_left() < 10:
-    #             count_expired += 1
-    #
-    #
-    #     page = request.args.get('page', 1, type=int)
-    #     stock_paginate = StockItems.query.filter_by(user_id=current_user.id)\
-    #         .order_by(StockItems.product_code.asc())\
-    #         .paginate(page=page, per_page=10)
-    #
-    #
-    #     product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
-    #     product_code_list = []
-    #
-    #     for x in product_codes_collection:
-    #         product_code_list.append({"code": x.id, "code_name": x.product_code,
-    #                                   "unit": x.unit, "description": x.description})
-    #
-    #
-    #     items_list = []
-    #
-    #     for i in stock_paginate.items:
-    #
-    #         items_list.append({"id": i.id,
-    #                            "product_name": i.product_name,
-    #                            "quantity": i.quantity,
-    #                            "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
-    #
-    #                            "product_code": i.product_code})
-    #
-    #
-    #     for i in items_list:
-    #         date = i['expiration_date']
-    #         i['days_left'] = ExpirationCalculator(date).show_days_left()
-    #
-    #
-    #
-    #     return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate,
-    #                            stock_array=items_list, product_code_list=product_code_list)
-    #
-
-
-
 
 
     @app.route('/stock-items', methods=['GET'])
@@ -473,13 +394,14 @@ def create_app(test_config=None):
         page = request.args.get('page', 1, type=int)
         stock_paginate = StockItems.query.filter_by(user_id=current_user.id)\
             .order_by(StockItems.product_code.asc())\
-            .paginate(page=page, per_page=10)
+            .paginate(page=page, per_page=20)
 
 
         product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
         product_code_list = []
-
+        code_dictionary = {}
         for x in product_codes_collection:
+            code_dictionary[x.id] = x.product_code
             product_code_list.append({"code": x.id, "code_name": x.product_code,
                                       "unit": x.unit, "description": x.description})
 
@@ -492,8 +414,9 @@ def create_app(test_config=None):
                                "product_name": i.product_name,
                                "quantity": i.quantity,
                                "expiration_date": i.expiration_date.strftime('%d-%m-%Y'),
-
+                                "exp_d_format": i.expiration_date.strftime('%Y-%m-%d'),
                                "product_code": i.product_code})
+
 
 
         for i in items_list:
@@ -503,10 +426,7 @@ def create_app(test_config=None):
 
 
         return render_template('stock.html', count_expired=count_expired, stock_paginate=stock_paginate,
-                               stock_array=items_list, product_code_list=product_code_list)
-
-
-
+                               stock_array=items_list, product_code_list=product_code_list, code_dictionary=code_dictionary)
 
 
 
@@ -520,10 +440,6 @@ def create_app(test_config=None):
             new_quantity = int(body.get('quantity', None))
             new_expiration_date = body.get('expiration_date', None)
             product_code = body.get('product_code', None)
-
-
-
-
 
             user_id = current_user.id
 
@@ -583,34 +499,24 @@ def create_app(test_config=None):
             edit_product_name = body.get('edit-product_name')
             edit_quantity = int(body.get('edit-quantity'))
             edit_expiration_date = body.get('edit-expiration_date')
-
             edit_product_code = body.get('edit-product_code')
 
-
-
-
             stock_patch = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
-
 
             stock_patch.product_name = edit_product_name
             stock_patch.quantity = edit_quantity
             stock_patch.expiration_date = edit_expiration_date
             stock_patch.user_id = current_user.id
             stock_patch.product_code = edit_product_code
-
             stock_patch.update()
-
-
-
 
             product_codes_collection = ProductCodes.query.filter(ProductCodes.user_id == current_user.id).all()
             product_code_list = []
-
+            code_dictionary = {}
             for i in product_codes_collection:
+                code_dictionary[i.id] = i.product_code
                 product_code_list.append({"code": i.id, "code_name":i.product_code,
                                           "unit": i.unit, "description": i.description})
-
-
 
             stock_items_collection = StockItems.query.all()
             items_list = []
@@ -633,18 +539,12 @@ def create_app(test_config=None):
                     "code_name": code_name
                 })
 
-
-
             for i in items_list:
                 date = i['expiration_date']
                 i['days_left'] = ExpirationCalculator(date).show_days_left()
 
             sorted_list = sorted(items_list, key=lambda i: i['id'])
-
-
-
             Message = {"items_list": sorted_list}
-
             return Message
 
         except:
@@ -656,12 +556,10 @@ def create_app(test_config=None):
         try:
             stock_to_delete = StockItems.query.filter(StockItems.id == stock_id).one_or_none()
 
-
             if stock_to_delete is None:
                 abort(404)
 
             stock_to_delete.delete()
-
             return jsonify({
                 'success': True,
                 'deleted_stock': stock_id
@@ -671,19 +569,11 @@ def create_app(test_config=None):
 
 
 
-
-
-    #graph ______________________________________________________
-    from graph import SalesDateQuantity
-
     @app.route('/history', methods=['GET', 'POST'])
     def show_history():
 
         page = request.args.get('page', 1, type=int)
         sales = Sales.query.filter_by(user_id=current_user.id).order_by(Sales.sale_date.desc()).paginate(page=page, per_page=10)
-
-
-
 
         sale_list = []
         for i in sales.items:
@@ -692,30 +582,7 @@ def create_app(test_config=None):
 
 
 
-        return render_template("graph_page.html", sale_list=sale_list, sales=sales)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return render_template("history.html", sale_list=sale_list, sales=sales)
 
 
 

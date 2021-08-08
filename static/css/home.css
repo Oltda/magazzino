@@ -4,49 +4,39 @@ body {
 }
 
 #container-img{
-position: absolute;
-height:120%;
-width: 120%;
-top: 0px;
-left:0px;
-z-index: -1;
-opacity: 0.9;
+    position: absolute;
+    height:120%;
+    width: 120%;
+    top: 0px;
+    left:0px;
+    z-index: -1;
+    opacity: 0.9;
 }
 
-
 .stock-icon{
-width: 100%;
-position: absolute;
-text-align: center;
-top: -100px;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    top: -100px;
 }
 
 .login-heading{
-text-align: center;
-color: #004d99;
-height: 80px;
-margin-top: 30px;
-
-vertical-align: middle;
-line-height: 80px;
-font-size: 30px;
-
+    text-align: center;
+    color: #004d99;
+    height: 80px;
+    margin-top: 30px;
+    vertical-align: middle;
+    line-height: 80px;
+    font-size: 30px;
 }
-
 
 .fa-warehouse{
-color: #004d99;
-
+    color: #004d99;
 }
-
-
-
-
 
 
 #loginWrapper{
     position: relative;
-
     border-radius: 10px;
     background: #f0f8ff;
     top: 400px;
@@ -62,37 +52,34 @@ color: #004d99;
 }
 
 
-
-
 #loginWrapper div{
-
-width: 60%;
-margin: auto;
-padding: 3%;
+    width: 60%;
+    margin: auto;
+    padding: 3%;
 }
 
 
 #loginWrapper div p{
-width: 100%;
+    width: 100%;
 }
 
 #remember_me{
-width: 5%;
+    width: 5%;
 }
 
 #username, #password, #email, #password, #password2{
-width: 100%;
-height: 40px;
-font-size: 18px;
-border: none;
-border-bottom: 1px solid gray;
-background: #f0f8ff;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    border-bottom: 1px solid gray;
+    background: #f0f8ff;
 }
 
 
 #password:focus, #username:focus{
-outline: none;
-border-bottom: 2px solid black;
+    outline: none;
+    border-bottom: 2px solid black;
 }
 
 
@@ -111,7 +98,7 @@ border-bottom: 2px solid black;
 
 
 .submitLogin:hover{
-background: #0080ff;
+    background: #0080ff;
 }
 
 
@@ -130,32 +117,30 @@ list-style: none;
 }
 
 
-
-
-
 .table-cont{
-display: inline-block;
-margin-left: 1%;
-width: 55%;
-min-width: 600px;
+    display: inline-block;
+    margin-left: 1%;
+    width: 55%;
+    min-width: 600px;
 }
 
 .table-cont-sell, .table-cont-history{
-width: 80%;
-margin: auto;
-
+    width: 80%;
+    margin: auto;
 }
 
 .heading{
     text-align:center;
     position:relative;
+    margin-bottom: 40px;
+    font-size: 40px;
 }
+
 
 
 #stock-table tr th{
     background: #098bdc;
     color: white;
-
 }
 
 #sell-table tr th{
@@ -172,19 +157,14 @@ margin: auto;
 
 
 #stock-table, #product-table, #code-table, #sell-table  td, th{
-
       text-align: center;
       padding: 8px;
 }
 
 
-
-
-
-
 #sell-table{
-margin:auto;
-width: 100%;
+    margin:auto;
+    width: 80%;
 }
 
 
@@ -202,8 +182,6 @@ width: 100%;
 
 
 
-
-/* table widgets */
 #exp_notif{
     background: #ff7d66;
     text-align: center;
@@ -243,49 +221,45 @@ display: block;
 
 
 .new-entry{
-display: none;
-text-align: center;
-font-size: 16px;
+    display: none;
+    text-align: center;
+    font-size: 16px;
 }
 
 .new-entry.editing{
-display: block;
-height: 40px;
-border: none;
-border-bottom: 1px solid grey;
-width: 80%;
-margin: 5px;
-background: #f2f2f2;
+    display: block;
+    height: 40px;
+    border: none;
+    border-bottom: 1px solid grey;
+    width: 80%;
+    margin: 5px;
+    background: #f2f2f2;
 }
 
 
 .new-entry.editing:focus{
-outline: none;
-border-bottom: 2px solid black;
+    outline: none;
+    border-bottom: 2px solid black;
 }
-
-
-
-
 
 
 
 .sell-input{
-display: block;
-height: 40px;
-border: none;
-border-bottom: 1px solid grey;
-width: 80%;
-margin: 5px;
-text-align: center;
-font-size: 18px;
-background: #f2f2f2;
+    display: block;
+    height: 40px;
+    border: none;
+    border-bottom: 1px solid grey;
+    width: 80%;
+    margin: 5px;
+    text-align: center;
+    font-size: 18px;
+    background: #f2f2f2;
 }
 
 
 .sell-input:focus{
-outline: none;
-border-bottom: 2px solid black;
+    outline: none;
+    border-bottom: 2px solid black;
 }
 
 
@@ -334,8 +308,8 @@ border-bottom: 2px solid black;
 .sellBtn{
     padding: 0px;
     cursor: pointer;
-    width: 50px;
-    height: 40px;
+    width: 80px;
+    height: 100%;
     color: white;
     font-weight: bold;
     background: #22dd22;
@@ -398,7 +372,6 @@ pointer-events:none;
     text-align: center;
     width: 20%;
     background: #f2f2f2;
-
 }
 
 .column.prod-name{
@@ -414,9 +387,6 @@ width: 30%;
 .first{
 width: 5%;
 }
-
-
-
 
 
 
@@ -684,18 +654,21 @@ margin: auto;
   and (orientation: portrait)
   and (-webkit-min-device-pixel-ratio: 2) {
 
-  .main-cont{
-      margin-top: 10%;
-      margin-left: 10%;
-  }
+          .main-cont{
+              margin-top: 5%;
+              margin-left: 10%;
+              padding-top: 0px;
+          }
 
-  #form-cont, .form-container{
-    width: 80%;
-  }
+          #form-cont, .form-container{
+            width: 80%;
+          }
 
-  .table-cont-sell, .table-cont{
-  width: 85%;
-  }
+          .table-cont-sell, .table-cont{
+          width: 85%;
+          top: 20px;
+          }
+
 
 
   }

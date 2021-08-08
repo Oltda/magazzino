@@ -30,9 +30,6 @@
 
 
 
-
-
-
             seznam = []
             $(".editButton").click(function (e) {
 
@@ -64,10 +61,6 @@
 
                     success: function (response) {
                         seznam = response['product_code_list']
-                        console.log(seznam);
-
-
-
 
                         document.getElementById("code" + editCodeID).innerHTML = codeVal
                         document.getElementById("unit" + editCodeID).innerHTML = unitVal
@@ -79,9 +72,6 @@
                 });
                 e.preventDefault();
             });
-
-
-
 
 
 
@@ -106,7 +96,7 @@
 
                     success: function (response) {
                         seznam = response['product_code_list']
-                        console.log(seznam);
+
 
                         new_code = seznam[seznam.length -1]
 
@@ -129,9 +119,6 @@
                         row.appendChild(td);
                         row.appendChild(td2);
                         row.appendChild(td3);
-
-//                        document.getElementById("warehouse-name").value = ""
-//                        document.getElementById("address").value = ""
 
                     },
                     error: function (error) {

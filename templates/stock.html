@@ -19,7 +19,7 @@
 
 var stock_array = {{stock_array | tojson}};
 var product_code_list = {{product_code_list | tojson}}
-
+var code_dictionary = {{code_dictionary | tojson}}
 </script>
 
 
@@ -179,7 +179,7 @@ var product_code_list = {{product_code_list | tojson}}
 
                 <td class="expiration">
                     <p class="original-entry" id="exp-date{{item.id}}">{{item.expiration_date}}</p>
-                    <input class="new-entry"  placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
+                    <input class="new-entry" value="{{item.exp_d_format}}" placeholder="expiration date" id="exp-dateID{{item.id}}" type="date" name="edit-expiration_date">
                 </td>
 
 
