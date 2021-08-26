@@ -1,6 +1,9 @@
 # Warehouse Management App
 
+<div style="width:60%; height:30%;">
 ![login](https://user-images.githubusercontent.com/75533746/131019270-b115c7e7-e2dd-49e7-bc9b-3db635c8552d.png)
+</div>
+
 
 I created this app for a friend who opened a small business and needed a simple CRUD application 
 to keep record of the available stock. One of the features of this app is an automatic expiration date
