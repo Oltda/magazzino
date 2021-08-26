@@ -7,5 +7,5 @@ checker that notifies the user 10 days before the expiration date of a stock ite
 For a better user experience, I implemented Ajax for http requests.
 
 Tech stack:
-        - backend: Python - Flask framework, PostgreSQL database
+        - backend: Python - Flask framework, PostgreSQL database <br />
         - frontend: vanilla javaScript, HTML, CSS
