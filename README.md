@@ -13,4 +13,9 @@ ________________________________________________________________________________
 
 # Dashboard
 
-![dashboard](https://user-images.githubusercontent.com/75533746/131020093-722159a1-230a-40b4-a631-6fd9bb10546d.png)
+![dashboard](https://user-images.githubusercontent.com/75533746/131021373-a38187b0-92a5-47ac-a510-e5849023c236.gif)
+
+
+# Sell/Buy
+
+![sell-buy](https://user-images.githubusercontent.com/75533746/131022080-c494edf9-370e-46d0-9795-8167c0bc8d4b.gif)
